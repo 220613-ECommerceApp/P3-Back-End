@@ -20,6 +20,14 @@ public class ProductService {
     public List<Product> findAll() {
         return productRepository.findAll();
     }
+    
+    public List<Product> listAll(String keyword) {
+        if (keyword != null) {
+            return productRepository.search(keyword);
+        }
+        return productRepository.findAll();
+    }
+    
 
     public Optional<Product> findById(int id) {
         return productRepository.findById(id);

@@ -19,6 +19,9 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 	@Query("SELECT p FROM products p WHERE p.price BETWEEN startPrice AND endPrice")
 	public List<Product> priceRangeSearch(double startPrice, double endPrice);
 	
+	@Query("SELECT p FROM products p WHERE p.id = (SELECT product_id FROM products_tags WHERE tag_name = tagName")
+	public List<Product> tagSearch(String tagName); 
+	
 }
 
 
