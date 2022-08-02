@@ -92,3 +92,11 @@ INSERT INTO users (id, email, password, username) VALUES (
     'pass',
     'test'
 );
+
+INSERT INTO orderhistory_item (id, product_id, user_id, quantity, purchase_time) VALUES (
+    1,
+    4,
+    1,
+    30,
+    CURRENT_TIMESTAMP
+);
