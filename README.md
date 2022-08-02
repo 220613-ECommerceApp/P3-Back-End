@@ -5,6 +5,7 @@ Backend for our slick new ECommerce website
 1. Clone repo with `git clone https://github.com/220613-ECommerceApp/P3-Back-End.git`
 2. Create branch locally through bash with `git checkout -b your-branch-name`
 3. Make desired changes
+    1. Change the profile in application.yml from `active: dev` to `active: production`
 4. Add files to staging with `git add .` or individually with `git add filename.file`
 5. Push to your branch the first time with `git push -u origin your-branch-name` or `git push --set-upstream origin your-branch-name`
     1. Subsequently you can push to the branch with a simple `git push`
@@ -19,6 +20,7 @@ Backend for our slick new ECommerce website
 
 ## Getting started with H2
 1. To run this backend simply run the ECommerceApplication.java
+    1. You will need to change the active profile in application.yml to `active: dev`
 2. Go to http://localhost:8080/h2-console to connect (The h2 console information should match the application.yml)
     1. driver: org.h2.Driver
     2. url: jdbc:h2:mem:memdb
