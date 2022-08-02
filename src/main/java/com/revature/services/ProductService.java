@@ -21,8 +21,8 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public List<Product> findByDescriptionContaining(String description) {
-        return productRepository.findByDescriptionContaining(description);
+    public List<Product> findByDescription(String description) {
+        return productRepository.findByDescriptionContainingIgnoreCase(description);
     }
 
     public Optional<Product> findById(int id) {

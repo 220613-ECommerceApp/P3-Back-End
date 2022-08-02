@@ -34,16 +34,16 @@ public class ProductServiceTest {
 
       List<Product> testList = new ArrayList<>();
       testList.add(testProduct);
-      when(productRepository.findByDescriptionContaining("bag")).thenReturn(testList);
+      when(productRepository.findByDescriptionContainingIgnoreCase("bAg")).thenReturn(testList);
 
-      List<Product> resultList = productService.findByDescriptionContaining("bag");
+      List<Product> resultList = productService.findByDescription("bAg");
       assertEquals(1, resultList.size());
       assertEquals("A reusable shopping bag", resultList.get(0).getDescription());
    }
 
    @Test
    void findByDescriptionContainingShouldReturnEmtpyIfNoMatch() {
-      List<Product> resultList = productService.findByDescriptionContaining("GTA 5");
+      List<Product> resultList = productService.findByDescription("GTA 5");
       assertEquals(0, resultList.size());
    }
 }

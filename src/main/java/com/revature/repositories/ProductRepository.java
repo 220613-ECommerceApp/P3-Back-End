@@ -7,5 +7,5 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProductRepository extends JpaRepository<Product, Integer> {
-   public List<Product> findByDescriptionContaining(String description);
+   public List<Product> findByDescriptionContainingIgnoreCase(String description);
 }
