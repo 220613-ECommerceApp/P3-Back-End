@@ -42,9 +42,7 @@ public class ProductController {
     // @Authorized
     @GetMapping("/search/{query}")
     public ResponseEntity<List<Product>> findByDescriptionContaining(@PathVariable("query") String query) {
-        System.out.println(query);
         List<Product> productList = productService.findByDescriptionContaining(query);
-        System.out.println(productList);
         if (productList.size() == 0) {
             return ResponseEntity.notFound().build();
         }
