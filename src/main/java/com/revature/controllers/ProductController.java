@@ -39,7 +39,7 @@ public class ProductController {
         return ResponseEntity.ok(optional.get());
     }
 
-    // @Authorized
+    @Authorized
     @GetMapping("/search/{query}")
     public ResponseEntity<List<Product>> findByDescriptionContaining(@PathVariable("query") String query) {
         List<Product> productList = productService.findByDescriptionContaining(query);
