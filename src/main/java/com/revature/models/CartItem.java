@@ -1,5 +1,6 @@
 package com.revature.models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -30,12 +31,12 @@ public class CartItem
 	private int quantity;
 	
 	
-	@ManyToOne(targetEntity = Product.class)
+	@ManyToOne(targetEntity = Product.class, cascade = CascadeType.ALL)
 	@JoinColumn(name = "product_id")
 	private int productId;
 	
 	
-	@ManyToOne(targetEntity = User.class)
+	@ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id")
 	private int userId;
 }
