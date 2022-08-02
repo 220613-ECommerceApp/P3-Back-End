@@ -25,7 +25,6 @@ import com.revature.services.ProductService;
 @RequestMapping("/api/product")
 @CrossOrigin(origins = { "http://localhost:4200", "http://localhost:3000" }, allowCredentials = "true")
 public class ProductController {
-
 	private final ProductService productService;
 
 	public ProductController(ProductService productService) {
@@ -101,4 +100,13 @@ public class ProductController {
 		return ResponseEntity.ok(productService.findBySimilarName(name));
 	}
 
+	@Authorized
+	@GetMapping("/search/description/{query}")
+	public ResponseEntity<List<Product>> searchByDescription(@PathVariable("query") String query) {
+		List<Product> productList = productService.findByDescription(query);
+		if (productList.size() == 0) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(productList);
+	}
 }

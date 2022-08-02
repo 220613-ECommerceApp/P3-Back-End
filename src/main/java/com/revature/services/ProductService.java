@@ -26,6 +26,10 @@ public class ProductService {
 		this.productRepository = productRepository;
 	}
 
+	public List<Product> findByDescription(String description) {
+		return productRepository.findByDescriptionContainingIgnoreCase(description);
+	}
+
 	public List<Product> findAll() {
 		return productRepository.findAll();
 	}
@@ -53,7 +57,6 @@ public class ProductService {
 		List<Product> allProd = new ArrayList<Product>(pRepo.findAll());
 		Set<Product> filteredNames = new HashSet<Product>();
 		filteredNames.addAll(pRepo.findBySimilarName(input));
-
 		for (Product p : allProd) {
 			int[][] dist = new int[p.getName().length()][input.length()];
 
