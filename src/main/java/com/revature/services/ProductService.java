@@ -21,6 +21,10 @@ public class ProductService {
         return productRepository.findAll();
     }
 
+    public List<Product> findByDescriptionContaining(String description) {
+        return productRepository.findByDescriptionContaining(description);
+    }
+
     public Optional<Product> findById(int id) {
         return productRepository.findById(id);
     }
@@ -28,9 +32,9 @@ public class ProductService {
     public Product save(Product product) {
         return productRepository.save(product);
     }
-    
+
     public List<Product> saveAll(List<Product> productList, List<ProductInfo> metadata) {
-    	return productRepository.saveAll(productList);
+        return productRepository.saveAll(productList);
     }
 
     public void delete(int id) {
