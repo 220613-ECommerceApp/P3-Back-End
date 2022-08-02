@@ -24,9 +24,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 	* another alternative to levenshtein + didnt need to install
 	* returns a list of products where the similarity between input and db name is >2 based on the SOUNDEX function
 	*/
-	@Query(value="SELECT name FROM products WHERE DIFFERENCE(name, ?1) >2"
-			+ "ORDER BY DIFFERENCE(name, ?1)", nativeQuery=true)
-	public List<Product> findBySimilarName(String name);
+	@Query("FROM Product WHERE name LIKE %:pattern%")
+	public List<Product> findBySimilarName(String pattern);
 	
 	
 	
