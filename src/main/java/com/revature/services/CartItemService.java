@@ -37,6 +37,13 @@ public class CartItemService {
  		return ci;
 	}
 	
+	public CartItem removeItem(Integer cartd, Integer productid, Integer userid) {
+		CartItem ci = cartItemRepository.getById(cartd);
+		cartItemRepository.deleteProductFromCart(cartd, productid, userid);
+		return ci;
+		
+	}
+	
 	public CartItem updateItemQuantity(int quantity, int cartd, int productid, int userid) {
 		
 		 CartItem ci = cartItemRepository.getById(cartd);
