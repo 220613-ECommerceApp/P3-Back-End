@@ -1,12 +1,8 @@
 package com.revature.services;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.revature.dtos.ProductInfo;
 import com.revature.models.WishListItem;
 import com.revature.repositories.UserRepository;
 import com.revature.repositories.WishListItemRepository;
@@ -32,9 +28,9 @@ public class WishListItemService {
     }
 
     public WishListItem addToWishList(int productId, int userId, int quantity){
-        WishListItem wLi = wishListItemRepository.findByuserId(userId).get();
+        WishListItem wLi = wishListItemRepository.findByUserId(userId).get();
         wLi.setProductId(productId);
-        wishListItemRepository.updateQuantityInCart(quantity, wLi.getId(), productId, wLi.getUserId());
+        wishListItemRepository.updateQuantityInWishList(quantity, wLi.getId(), productId, wLi.getUserId());
         return wLi;
     }
 

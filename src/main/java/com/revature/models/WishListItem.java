@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -23,8 +24,10 @@ public class WishListItem {
     private int id;
     private int quantity;
     @ManyToOne(targetEntity = Product.class)
-    private int product_id;
+    @JoinColumn(name = "product_id")
+    private int productId;
     @ManyToOne(targetEntity = User.class)
-    private int user_id;
+    @JoinColumn(name = "user_id")
+    private int userId;
     
 }
