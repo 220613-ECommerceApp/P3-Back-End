@@ -30,14 +30,21 @@ public class CartItemService {
 
 	}
 	
-	 
-	
-	public boolean addItemToCart(int productId, int userId, int quantity) {
+	public CartItem addItemToCart(int productId, int userId, int quantity) {
 		CartItem ci = cartItemRepository.findByUserId(userId).get();
 		ci.setProductId(productId);
-		ci.setQuantity(quantity);
-		return false;
+		cartItemRepository.updateQuantityInCart(quantity, ci.getId(), productId, ci.getUserId());
+ 		return ci;
 	}
 	
+	public CartItem updateItemQuantity(int quantity, int cartd, int productid, int userid) {
+		
+		 CartItem ci = cartItemRepository.getById(cartd);
+		 cartItemRepository.updateQuantityInCart(quantity, cartd, productid, userid);
+		 
+		return ci;
+		 
+	}
+ 
 
 }
