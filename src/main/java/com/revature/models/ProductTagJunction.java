@@ -13,7 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "products_tags")
+@Table(name = "tag_junction")
 @Data // generate getters/setter, toString, hashCode, and equals methods automatically
 @NoArgsConstructor
 @AllArgsConstructor
