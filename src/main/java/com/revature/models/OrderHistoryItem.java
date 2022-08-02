@@ -29,11 +29,11 @@ public class OrderHistoryItem {
     private int id;
 
 	@ManyToOne(targetEntity = Product.class)
-    @JoinColumn(name="product_id")
+    @JoinColumn(name="product_id", referencedColumnName = "id")
 	private int productId;
 
 	@ManyToOne(targetEntity = User.class)
-    @JoinColumn(name="user_id")
+    @JoinColumn(name="user_id", referencedColumnName = "id")
 	private int userId;
 
     @Column(name="quantity")
