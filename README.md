@@ -17,5 +17,14 @@ Backend for our slick new ECommerce website
     3. `git branch -d your-branch-name`
     4. If you want to make new changes create a new branch the same way as stated before
 
-## Getting started
-To run this backend simply run the ECommerceApplication.java
+## Getting started with H2
+1. To run this backend simply run the ECommerceApplication.java
+2. Go to http://localhost:8080/h2-console to connect (The h2 console information should match the application.yml)
+    1. driver: org.h2.Driver
+    2. url: jdbc:h2:mem:memdb
+    3. username: sa
+    4. password: sa
+3. If done correctly you should be connected to the h2 console
+4. By default spring is going to create our tables for us based on the models. If you do not want this change `defer-datasource-initilization: true` in the application.yml to `defer-datasource-initilization: false`. Then update the data.sql script with the CREATE tables you want
+5. The mock data is created in the script `data.sql`. You can modify this as needed to add mock data.
+6. Run the front end with ng serve -o. by default this is hosted on http://localhost:4200. Angular should automatically open this in your browser.
