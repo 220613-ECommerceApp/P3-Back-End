@@ -12,17 +12,17 @@ import com.revature.models.CartItem;
 public interface CartItemRepository extends JpaRepository<CartItem, Integer> {
 
 	Optional<CartItem> findByUserId(int userid);
-	
-	//custom query to change quantity of an item inside the cart
+
+	// custom query to change quantity of an item inside the cart
 	@Modifying
 	@Query(value = "UPDATE cart_item c set c.quantity = ?  WHERE c.id = ? AND c.product_id = ? AND c.user_id = ?", nativeQuery = true)
 	void updateQuantityInCart(Integer quantity, Integer cartd, Integer productid, Integer userid);
-	
-	//custom query to change quantity of an item inside the cart
-//		@Modifying
-//		@Query(value = "UPDATE cart_item c set c.quantity = ?  WHERE c.id = ? AND c.product_id = ? AND c.user_id = ?", nativeQuery = true)
-//		void updateQuantityInCart(Integer quantity, Integer cartd, Integer productid, Integer userid);
-	
+
+	// custom query to change quantity of an item inside the cart
+	@Modifying
+	@Query(value = "DELETE FROM cart_item c WHERE c.id = ? AND c.product_id = ? AND c.user_id = ?", nativeQuery = true)
+	void deleteProductFromCart(Integer cartd, Integer productid, Integer userid);
+
 	CartItem getById(int id);
-	
+
 }
