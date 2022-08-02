@@ -30,8 +30,9 @@ public class OrderHistoryController {
 
     @Authorized
     @GetMapping("/orderHistory")
-    public ResponseEntity<List<OrderHistoryItem>> getOrderHistory() {
-        return ResponseEntity.ok(orderHistoryService.findById(1));
+    public ResponseEntity<List<OrderHistoryItem>> getOrderHistory(HttpSession session) {
+        User u = (User) session.getAttribute("user");
+        return ResponseEntity.ok(orderHistoryService.findById(u.getId()));
     }
 
 }

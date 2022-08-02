@@ -16,6 +16,6 @@ public class OrderHistoryService {
     }
     
     public List<OrderHistoryItem> findById(int id){
-        return orderHistoryItemRepository.findByUserId(id);
+        return orderHistoryItemRepository.findAll();
     }
 }
