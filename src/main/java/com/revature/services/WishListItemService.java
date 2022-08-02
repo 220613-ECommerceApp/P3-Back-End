@@ -34,11 +34,12 @@ public class WishListItemService {
         return wLi;
     }
 
-    public WishListItem removeWishListItem(Integer wishListId, Integer productId, Integer userId){
-        WishListItem wLi = wishListItemRepository.getById(wishListId);
-        wishListItemRepository.deleteProductFromWishList(wishListId, productId, userId);
-        return wLi;
-    }
+    // public void removeWishListItem(Integer wishListId, Integer productId, Integer userId){
+    //     WishListItem wLi = wishListItemRepository.getById(wishListId);
+    //     wLi.setProductId(productId);
+    //     wishListItemRepository.deleteById();
+    // }
+
 
     public WishListItem updateItemQuantity(int quantity, int wishListId, int productId, int userId){
         WishListItem wLi = wishListItemRepository.getById(wishListId);
