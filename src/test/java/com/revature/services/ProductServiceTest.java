@@ -1,4 +1,4 @@
-package com.revature;
+package com.revature.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -14,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.revature.models.Product;
 import com.revature.repositories.ProductRepository;
-import com.revature.services.ProductService;
 
 @ExtendWith(MockitoExtension.class)
 public class ProductServiceTest {
