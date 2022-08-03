@@ -1,6 +1,6 @@
 package com.revature.models;
 
-import javax.persistence.CascadeType;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -34,11 +34,11 @@ public class CartItem
 	@ManyToOne(targetEntity = Product.class)
 	@JoinColumn(name = "product_id")
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private int productId;
+	private Product product;
 	
 	
 	@ManyToOne(targetEntity = User.class)
 	@JoinColumn(name = "user_id")
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private int userId;
+	private User user;
 }
