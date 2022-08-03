@@ -1,5 +1,7 @@
 package com.revature.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,7 @@ public class CartItemService {
 		this.userRepository = userRepository;
 	}
 
+	//Don't think we need this but I'll leave it atm
 	public CartItem createCart(int userId) {
 		CartItem ci = new CartItem();
 		ci.setUserId(userId);
@@ -49,6 +52,12 @@ public class CartItemService {
 		return ci;
 		 
 	}
+	
+	public List<CartItem> getByUserId(int id){
+		
+		return cartItemRepository.findListByUserId(id);
+	}
+	
  
 
 }
