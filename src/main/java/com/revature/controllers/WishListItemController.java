@@ -1,12 +1,14 @@
 package com.revature.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,8 +32,16 @@ public class WishListItemController {
 
     @Authorized
     @GetMapping("/wishlist")
-    public ResponseEntity<List<WishListItem>> getWishList(HttpSession session) {
+    public ResponseEntity<Optional<WishListItem>> getWishList(HttpSession session) {
         User u = (User) session.getAttribute("user");
-        return ResponseEntity.ok(wishListItemService.findById(u.getId()));
+        return ResponseEntity.ok(wishListItemService.findWishListById(u.getId()));
     }
+
+    @Authorized
+    @PostMapping("/wishlist")
+    public ResponseEntity<Optional<WishListItem>> showWishList(HttpSession session) {
+        User u = (User) session.getAttribute("user");
+        return ResponseEntity.ok(wishListItemService.findWishListById(u.getId()))
+    }
+
 }
