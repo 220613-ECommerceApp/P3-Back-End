@@ -1,16 +1,16 @@
 package com.revature.models;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,12 +31,14 @@ public class CartItem
 	private int quantity;
 	
 	
-	@ManyToOne(targetEntity = Product.class, cascade = CascadeType.ALL)
+	@ManyToOne(targetEntity = Product.class)
 	@JoinColumn(name = "product_id")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private int productId;
 	
 	
-	@ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL)
+	@ManyToOne(targetEntity = User.class)
 	@JoinColumn(name = "user_id")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private int userId;
 }
