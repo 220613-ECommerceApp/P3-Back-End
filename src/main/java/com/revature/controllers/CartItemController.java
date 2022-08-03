@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,8 +30,8 @@ public class CartItemController {
 
 	@Authorized
 	@PostMapping("/addtocart/{productid}")
-	public ResponseEntity<CartItem> addToCart(@PathVariable("productid") Integer productid, @RequestBody int userid,
-			@RequestBody int quantity) {
+	public ResponseEntity<CartItem> addToCart(@PathVariable("productid") int productid, @RequestHeader int userid,
+			@RequestHeader int quantity) {
 		CartItem ci = cis.addItemToCart(productid, userid, quantity);
 		return new ResponseEntity<CartItem>(ci, HttpStatus.OK);
 	}
@@ -39,8 +39,8 @@ public class CartItemController {
 	// All counts of a single item
 	@Authorized
 	@PostMapping("/removefromcart/{productid}")
-	public ResponseEntity<CartItem> removeFromCart(@PathVariable("productid") Integer productid,
-			@RequestBody int userid) {
+	public ResponseEntity<CartItem> removeFromCart(@PathVariable("productid") int productid,
+			@RequestHeader int userid) {
 		CartItem ci = cis.removeItem(productid, userid);
 		return new ResponseEntity<CartItem>(ci, HttpStatus.OK);
 	}
@@ -48,15 +48,15 @@ public class CartItemController {
 	// Quantity = the new updated quantity
 	@Authorized
 	@PutMapping("/updatecart/{productid}")
-	public ResponseEntity<CartItem> changeQuantity(@PathVariable("productid") Integer productid,
-			@RequestBody int userid, @RequestBody int quantity) {
+	public ResponseEntity<CartItem> changeQuantity(@PathVariable("productid") int productid,
+			@RequestHeader int userid, @RequestHeader int quantity) {
 		CartItem ci = cis.updateItemQuantity(quantity, productid, userid);
 		return new ResponseEntity<CartItem>(ci, HttpStatus.OK);
 	}
 
 	@Authorized
     @GetMapping("{userid}")
-    public ResponseEntity<List<CartItem>> getCart(@PathVariable("userid") Integer userid) {
+    public ResponseEntity<List<CartItem>> getCart(@PathVariable("userid") int userid) {
             return ResponseEntity.ok(cis.getByUserId(userid));
     }
 	
