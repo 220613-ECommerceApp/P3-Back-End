@@ -33,20 +33,20 @@ public class CartItemService {
 	}
 	
 	public CartItem addItemToCart(int productid, int userId, int quantity) {
-		CartItem ci = cartItemRepository.findByUserId(userId).get();
+		CartItem ci = cartItemRepository.findByUserId(userId);
 		cartItemRepository.addToCart(userId, productid,quantity);
  		return ci;
 	}
 	
 	public CartItem removeItem(int productid, int userid) {
-		CartItem ci = cartItemRepository.findByUserId(userid).get();
+		CartItem ci = cartItemRepository.findByUserId(userid);
 		cartItemRepository.deleteProductFromCart(productid, userid);
 		return ci;
 		
 	}
 	
 	public CartItem updateItemQuantity(int quantity, int productid, int userid) {
-		CartItem ci = cartItemRepository.findByUserId(userid).get();
+		CartItem ci = cartItemRepository.findByUserId(userid);
 		 cartItemRepository.updateQuantityInCart(quantity, productid, userid);
 		return ci;
 		 

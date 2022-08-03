@@ -11,7 +11,7 @@ import com.revature.models.CartItem;
 
 public interface CartItemRepository extends JpaRepository<CartItem, Integer> {
 
-	Optional<CartItem> findByUserId(int userid);
+	CartItem findByUserId(int userid);
 
 	// adding an item with initial quantity for a cart's user
 	@Modifying
