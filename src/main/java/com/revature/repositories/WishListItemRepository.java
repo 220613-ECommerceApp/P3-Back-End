@@ -23,7 +23,7 @@ public interface WishListItemRepository extends JpaRepository<WishListItem, Inte
     @Modifying
     @Query
     (value = "DELETE FROM wishlist_item w WHERE w.id = ? AND w.product_id = ? AND w.user_id = ?", nativeQuery = true)
-    void deleteProductFromWishList(Integer wishListId, Integer productId, Integer userId);
+    void deleteProductFromWishList(Integer wishListId, Integer product, Integer user);
 
     WishListItem getById(int id);
 

@@ -1,27 +1,29 @@
 package com.revature.controllers;
 
-import java.util.List;
+import java.security.cert.PKIXRevocationChecker.Option;
 import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.annotations.Authorized;
-import com.revature.models.OrderHistoryItem;
+import com.revature.models.Product;
 import com.revature.models.User;
 import com.revature.models.WishListItem;
-import com.revature.services.OrderHistoryService;
+import com.revature.services.UserService;
 import com.revature.services.WishListItemService;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:3000"}, allowCredentials = "true")
+@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:3000" }, allowCredentials = "true")
 public class WishListItemController {
 
     private final WishListItemService wishListItemService;
@@ -31,17 +33,31 @@ public class WishListItemController {
     }
 
     @Authorized
-    @GetMapping("/wishlist")
+    @PostMapping("/create-wishlist")
+    public ResponseEntity<Optional<WishListItem>> makeWishList(HttpSession session) {
+        User u = (User) session.getAttribute("user");
+        return ResponseEntity.ok(wishListItemService.addToWishList());
+    }
+
+    @Authorized
+    @GetMapping(path = "/get-wishlist")
     public ResponseEntity<Optional<WishListItem>> getWishList(HttpSession session) {
+        Optional<WishListItem>  = WishListItemService.getById();
+        return ResponseEntity.ok(wishListItemService.findWishListById(u.getId()));
+    }
+
+    @Authorized
+    @PutMapping("/update-wishlist")
+    public ResponseEntity<Optional<WishListItem>> updateWishList(HttpSession session) {
         User u = (User) session.getAttribute("user");
         return ResponseEntity.ok(wishListItemService.findWishListById(u.getId()));
     }
 
     @Authorized
-    @PostMapping("/wishlist")
-    public ResponseEntity<Optional<WishListItem>> showWishList(HttpSession session) {
+    @DeleteMapping("/clear-wishlist")
+    public ResponseEntity<Optional<WishListItem>> clearWishList(HttpSession session) {
         User u = (User) session.getAttribute("user");
-        return ResponseEntity.ok(wishListItemService.findWishListById(u.getId()))
+        return ResponseEntity.ok(wishListItemService.findWishListById(u.getId()));
     }
 
 }
