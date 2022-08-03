@@ -1,12 +1,15 @@
 package com.revature.repositories;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.revature.models.CartItem;
+import com.revature.models.OrderHistoryItem;
 
 public interface CartItemRepository extends JpaRepository<CartItem, Integer> {
 
@@ -23,5 +26,8 @@ public interface CartItemRepository extends JpaRepository<CartItem, Integer> {
 	void deleteProductFromCart(Integer productid, Integer userid);
 
 	CartItem getById(int id);
+	
+	 @Query(value = "SELECT * FROM cart_item WHERE user_id = ?", nativeQuery = true)
+	    public List<CartItem> findListByUserId(Integer id);
 
 }

@@ -21,6 +21,7 @@ public class CartItemService {
 		this.userRepository = userRepository;
 	}
 
+	//Don't think we need this but I'll leave it atm
 	public CartItem createCart(int userId) {
 		CartItem ci = new CartItem();
 		ci.setUserId(userId);
@@ -49,6 +50,8 @@ public class CartItemService {
 		return ci;
 		 
 	}
+	
+	
  
 
 }
