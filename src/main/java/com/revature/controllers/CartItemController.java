@@ -38,7 +38,12 @@ public class CartItemController {
 		return new ResponseEntity<CartItem>(ci, HttpStatus.OK);
 	}
 	
-	
+	//Quantity = the new updated quantity
+		@PutMapping("/updatecart/{productid}")
+		public ResponseEntity<CartItem> changeQuantity(@PathVariable("productid") Integer productid, @RequestBody int userid, @RequestBody int quantity) {
+			CartItem ci = cis.updateItemQuantity(quantity, productid, userid);
+			return new ResponseEntity<CartItem>(ci, HttpStatus.OK);
+		}
 	
 	
 	
