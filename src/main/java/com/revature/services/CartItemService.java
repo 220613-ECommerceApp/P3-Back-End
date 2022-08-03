@@ -33,21 +33,21 @@ public class CartItemService {
 	}
 	
 	public CartItem addItemToCart(int productid, int userId, int quantity) {
-		CartItem ci = cartItemRepository.findByUserId(userId);
 		cartItemRepository.addToCart(userId, productid,quantity);
+		CartItem ci = cartItemRepository.findByUserIdAndProductId(userId, productid);
  		return ci;
 	}
 	
 	public CartItem removeItem(int productid, int userid) {
-		CartItem ci = cartItemRepository.findByUserId(userid);
 		cartItemRepository.deleteProductFromCart(productid, userid);
+		CartItem ci = cartItemRepository.findByUserIdAndProductId(userid, productid);
 		return ci;
 		
 	}
 	
 	public CartItem updateItemQuantity(int quantity, int productid, int userid) {
-		CartItem ci = cartItemRepository.findByUserId(userid);
 		 cartItemRepository.updateQuantityInCart(quantity, productid, userid);
+		CartItem ci = cartItemRepository.findByUserIdAndProductId(userid,productid);
 		return ci;
 		 
 	}

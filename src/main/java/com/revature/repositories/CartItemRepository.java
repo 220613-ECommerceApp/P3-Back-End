@@ -11,13 +11,13 @@ import com.revature.models.CartItem;
 
 public interface CartItemRepository extends JpaRepository<CartItem, Integer> {
 
-	CartItem findByUserId(int userid);
+	CartItem findByUserIdAndProductId(int userid, int productid);
 
 	// adding an item with initial quantity for a cart's user
 	@Modifying
 	@Query(value = "INSERT INTO cart_item (user_id, product_id, quantity) VALUES (?1 ,?2 ,?3)", nativeQuery = true)
 	void addToCart(int userid, int productid, int quantity);
-	
+
 	// custom query to change quantity of an item inside the cart
 	@Modifying
 	@Query(value = "UPDATE cart_item SET quantity = ?1  WHERE product_id = ?2 AND user_id = ?3", nativeQuery = true)
@@ -29,8 +29,8 @@ public interface CartItemRepository extends JpaRepository<CartItem, Integer> {
 	void deleteProductFromCart(int productid, int userid);
 
 	CartItem getById(int id);
-	
-	 @Query(value = "SELECT * FROM cart_item WHERE user_id = ?1", nativeQuery = true)
-	    public List<CartItem> findListByUserId(int id);
+
+	@Query(value = "SELECT * FROM cart_item WHERE user_id = ?1", nativeQuery = true)
+	public List<CartItem> findListByUserId(int id);
 
 }
