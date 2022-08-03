@@ -3,6 +3,8 @@ package com.revature.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.revature.models.Product;
+import com.revature.models.User;
 import com.revature.models.WishListItem;
 import com.revature.repositories.UserRepository;
 import com.revature.repositories.WishListItemRepository;
@@ -21,29 +23,27 @@ public class WishListItemService {
         this.userRepository = userRepository;
     }
 
-    public WishListItem createWishList(WishListItem wishListItem, int userId){
+    public WishListItem createWishList(Product product, User user){
         WishListItem wLi = new WishListItem();
-        wLi.setUserId(userId);
+        wLi.setUser(user);
         return wishListItemRepository.save(wLi);
     }
 
-    public WishListItem addToWishList(int productId, int userId, int quantity){
-        WishListItem wLi = wishListItemRepository.findByUserId(userId).get();
-        wLi.setProductId(productId);
-        wishListItemRepository.updateQuantityInWishList(quantity, wLi.getId(), productId, wLi.getUserId());
+    public WishListItem addToWishList(Product product, User user, int quantity){
+        WishListItem wLi = wishListItemRepository.getById(user.getId());
+        wLi.setProduct(product);
+        wishListItemRepository.updateQuantityInWishList(quantity, wLi.getId(), product, wLi.getUser());
         return wLi;
     }
 
-    // public void removeWishListItem(Integer wishListId, Integer productId, Integer userId){
-    //     WishListItem wLi = wishListItemRepository.getById(wishListId);
-    //     wLi.setProductId(productId);
-    //     wishListItemRepository.deleteById();
-    // }
+    public void removeWishListItem(Integer wishListId){
+        wishListItemRepository.deleteById(wishListId);
+    }
 
 
-    public WishListItem updateItemQuantity(int quantity, int wishListId, int productId, int userId){
+    public WishListItem updateItemQuantity(int quantity, int wishListId, Product product, User user){
         WishListItem wLi = wishListItemRepository.getById(wishListId);
-        wishListItemRepository.updateQuantityInWishList(quantity, wishListId, productId, userId);
+        wishListItemRepository.updateQuantityInWishList(quantity, wishListId, product, user);
         return wLi;
     }
 

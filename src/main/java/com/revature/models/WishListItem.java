@@ -29,9 +29,9 @@ public class WishListItem {
     @ManyToOne(targetEntity = Product.class)
     @JoinColumn(name = "product_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private int productId;
+    private Product product;
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "user_id")
-    private int userId;
+    private User user;
     
 }

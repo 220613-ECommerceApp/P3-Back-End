@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import com.revature.models.Product;
+import com.revature.models.User;
 import com.revature.models.WishListItem;
 
 public interface WishListItemRepository extends JpaRepository<WishListItem, Integer>{
@@ -16,7 +18,7 @@ public interface WishListItemRepository extends JpaRepository<WishListItem, Inte
     @Modifying
     @Query
     (value = "UPDATE wishlist_item w SET w.quantity = ? WHERE w.id = ? AND w.product_id = ? AND w.user_id = ?", nativeQuery = true)
-    void updateQuantityInWishList(Integer quantity, Integer wishListId, Integer productId, Integer userId);
+    void updateQuantityInWishList(Integer quantity, Integer wishListId, Product product, User user);
 
     @Modifying
     @Query
