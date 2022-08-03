@@ -1,5 +1,7 @@
 package com.revature.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +53,10 @@ public class CartItemService {
 		 
 	}
 	
+	public List<CartItem> getByUserId(int id){
+		
+		return cartItemRepository.findListByUserId(id);
+	}
 	
  
 
