@@ -1,5 +1,7 @@
 package com.revature.models;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,35 +18,30 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @Entity
-@Table(name = "tag_junction")
-@Data // generate getters/setter, toString, hashCode, and equals methods automatically
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductTagJunction {
-	
-
-<<<<<<< HEAD
+@Table(name="orderhistory_item")
+public class OrderHistoryItem {
 	@Id
-	@Column(name = "j_id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-	
-=======
-    @Id
-	@Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private int id;
-    
->>>>>>> 246dff07e7f8e8b0ecf0a0f82bfccb798439302a
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "product_id", nullable = false)
-	@OnDelete(action = OnDeleteAction.CASCADE)
+
+	@ManyToOne(targetEntity = Product.class)
+    @JoinColumn(name="product_id", referencedColumnName = "id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
 	private Product product;
-	
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "tag_name", nullable = false)
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private Tag tag;
-	
+
+	@ManyToOne(targetEntity = User.class)
+    @JoinColumn(name="user_id", referencedColumnName = "id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+	private User user;
+
+    @Column(name="quantity")
+	private int quantity;
+
+    @Column(name="purchase_time", insertable=false)
+    private Timestamp purchaseTime;
 }
