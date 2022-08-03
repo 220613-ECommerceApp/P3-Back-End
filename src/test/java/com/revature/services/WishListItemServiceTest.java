@@ -1,12 +1,27 @@
 package com.revature.services;
 
+import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import com.revature.repositories.WishListItemRepository;
+
+@DataJpaTest
 public class WishListItemServiceTest {
 
-    @DataJpaTest
+    private WishListItemRepository wishListItemRepository;
 
+    @BeforeEach
+    private void setup() {
+
+    }
+    
+    @AfterEach
+    private void tearDown() {
+
+    }
     
     @Test
     void testAddToWishList() {
