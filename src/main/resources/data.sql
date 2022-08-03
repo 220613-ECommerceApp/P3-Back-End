@@ -1,3 +1,50 @@
+CREATE TABLE Products (
+	id SERIAL PRIMARY KEY,
+	name varchar(20),
+	Price float,
+	Quantity int,
+	ImageURL varchar(50),
+	Description varchar(100)
+);
+
+CREATE TABLE users (
+	id serial PRIMARY KEY,
+	username varchar(20),
+	pword varchar(20),
+	Email varchar(30)
+);
+
+CREATE TABLE cart_item (
+	id serial PRIMARY KEY,
+	product_id int, FOREIGN KEY (product_id) REFERENCES Products(id),
+	user_id int, FOREIGN KEY (user_id) REFERENCES users(id),
+	quantity int
+);
+
+CREATE TABLE wishlist_item (
+	id serial PRIMARY KEY,
+	product_id int, FOREIGN KEY (product_id) REFERENCES Products(id),
+	user_id int, FOREIGN KEY (user_id) REFERENCES users(id),
+	quantity int
+);
+
+CREATE TABLE orderhistory_item (
+	id serial PRIMARY KEY,
+	product_id int, FOREIGN KEY (product_id) REFERENCES Products(id),
+	user_id int, FOREIGN KEY (user_id) REFERENCES users(id),
+	quantity int,
+	purchase_time timestamp
+);
+
+CREATE TABLE Tag (
+	name varchar(20) PRIMARY KEY 
+);
+
+CREATE TABLE tag_junction(
+	product_id int, FOREIGN KEY (product_id) REFERENCES Products(id),
+	tag_name varchar(20), FOREIGN KEY (tag_name) REFERENCES Tag(name)
+);
+
 INSERT INTO product (id, quantity, price, description, image, name) VALUES (
     1,
     10,
