@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.revature.dtos.ProductInfo;
 import com.revature.models.Product;
+import com.revature.models.ProductTagJunction;
 import com.revature.repositories.ProductRepository;
 
 @Service
@@ -52,33 +53,69 @@ public class ProductService {
 
    // INPUT < NAME = OK
    // fuzzy String search
-   public Set<Product> findBySimilarName(String input) {
+//   public Set<Product> findBySimilarName(String input) {
+//
+//      List<Product> allProd = new ArrayList<Product>(pRepo.findAll());
+//      Set<Product> filteredNames = new HashSet<Product>();
+//      filteredNames.addAll(pRepo.findBySimilarNameContainingIgnoreCase(input));
+//      for (Product p : allProd) {
+//         int[][] dist = new int[p.getName().length()][input.length()];
+//
+//         for (int i = 0; i < p.getName().length(); i++) {
+//            for (int j = 0; j < input.length(); j++) {
+//               if (i == 0 && i != j) {
+//                  dist[i][j] = j;
+//               }
+//               if (j == 0) {
+//                  dist[i][j] = i;
+//
+//               } else if (i > 0 && j > 0) {
+//                  dist[i][j] = Math.min(Math.min(
+//                        dist[i - 1][j - 1] + ((p.getName().charAt(i - 1) == input.charAt(j - 1)) ? 0 : 1),
+//                        dist[i - 1][j] + 1), dist[i][j - 1] + 1);
+//               }
+//            }
+//         }
+//         if (dist[p.getName().length() - 1][input.length() - 1] <= p.getName().length() / 2) {
+//            filteredNames.add(p);
+//         }
+//      }
+//      return filteredNames;
+//   }
+   
+   
+   public Set<Product> findBySimilarNameDescription(String input) {
+	   List<Product> allProd = new ArrayList<Product>(pRepo.findAll());
+	   
+		Set<Product> filteredProds = new HashSet<Product>();
+		
+		filteredProds.addAll(pRepo.findBySimilarName(input));
+		filteredProds.addAll(pRepo.findByDescriptionContainingIgnoreCase(input));
+		
+		for (Product p : allProd) {
+			int[][] dist = new int[p.getName().length()][input.length()];
 
-      List<Product> allProd = new ArrayList<Product>(pRepo.findAll());
-      Set<Product> filteredNames = new HashSet<Product>();
-      filteredNames.addAll(pRepo.findBySimilarName(input));
-      for (Product p : allProd) {
-         int[][] dist = new int[p.getName().length()][input.length()];
+			for (int i = 0; i < p.getName().length(); i++) {
+				for (int j = 0; j < input.length(); j++) {
+					if (i == 0 && i != j) {
+						dist[i][j] = j;
+					}
+					if (j == 0) {
+						dist[i][j] = i;
 
-         for (int i = 0; i < p.getName().length(); i++) {
-            for (int j = 0; j < input.length(); j++) {
-               if (i == 0 && i != j) {
-                  dist[i][j] = j;
-               }
-               if (j == 0) {
-                  dist[i][j] = i;
-
-               } else if (i > 0 && j > 0) {
-                  dist[i][j] = Math.min(Math.min(
-                        dist[i - 1][j - 1] + ((p.getName().charAt(i - 1) == input.charAt(j - 1)) ? 0 : 1),
-                        dist[i - 1][j] + 1), dist[i][j - 1] + 1);
-               }
-            }
-         }
-         if (dist[p.getName().length() - 1][input.length() - 1] <= p.getName().length() / 2) {
-            filteredNames.add(p);
-         }
-      }
-      return filteredNames;
+					} else if (i > 0 && j > 0) {
+						dist[i][j] = Math.min(Math.min(
+								dist[i - 1][j - 1] + ((p.getName().charAt(i - 1) == input.charAt(j - 1)) ? 0 : 1),
+								dist[i - 1][j] + 1), dist[i][j - 1] + 1);
+					}
+				}
+			}
+			if (dist[p.getName().length() - 1][input.length() - 1] <= (p.getName()).length() / 2
+					|| filteredProds.contains(p)) {
+				filteredProds.add(p);
+			}
+		}
+		return filteredProds;
+	   
    }
 }
