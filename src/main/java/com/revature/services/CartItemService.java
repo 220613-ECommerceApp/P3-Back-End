@@ -21,31 +21,30 @@ public class CartItemService {
 		this.userRepository = userRepository;
 	}
 
-	public CartItem createCart(CartItem cartitem, int userId) {
+	public CartItem createCart(int userId) {
 		CartItem ci = new CartItem();
 		ci.setUserId(userId);
 		return cartItemRepository.save(ci);
-
 	}
 	
 	public CartItem addItemToCart(int productId, int userId, int quantity) {
 		CartItem ci = cartItemRepository.findByUserId(userId).get();
 		ci.setProductId(productId);
-		cartItemRepository.updateQuantityInCart(quantity, ci.getId(), productId, ci.getUserId());
+		cartItemRepository.updateQuantityInCart(quantity, productId, ci.getUserId());
  		return ci;
 	}
 	
-	public CartItem removeItem(Integer cartd, Integer productid, Integer userid) {
-		CartItem ci = cartItemRepository.getById(cartd);
-		cartItemRepository.deleteProductFromCart(cartd, productid, userid);
+	public CartItem removeItem(Integer productid, Integer userid) {
+		CartItem ci = cartItemRepository.findByUserId(userid).get();
+		cartItemRepository.deleteProductFromCart(productid, userid);
 		return ci;
 		
 	}
 	
-	public CartItem updateItemQuantity(int quantity, int cartd, int productid, int userid) {
+	public CartItem updateItemQuantity(int quantity, int productid, int userid) {
 		
-		 CartItem ci = cartItemRepository.getById(cartd);
-		 cartItemRepository.updateQuantityInCart(quantity, cartd, productid, userid);
+		CartItem ci = cartItemRepository.findByUserId(userid).get();
+		 cartItemRepository.updateQuantityInCart(quantity, productid, userid);
 		 
 		return ci;
 		 

@@ -1,6 +1,6 @@
 package com.revature.models;
 
-import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,29 +16,27 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-@Data
 @Entity
+@Table(name = "tag_junction")
+@Data // generate getters/setter, toString, hashCode, and equals methods automatically
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "cart_item")
-public class CartItem
-{
-	@Id
+public class ProductTagJunction {
+	
+
+    @Id
+	@Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-	
-	private int quantity;
-	
-	
-	@ManyToOne(targetEntity = Product.class)
-	@JoinColumn(name = "product_id")
+    
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "product_id", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private int productId;
+	private Product product;
 	
-	
-	@ManyToOne(targetEntity = User.class)
-	@JoinColumn(name = "user_id")
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "tag_name", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private int userId;
+	private Tag tag;
+	
 }

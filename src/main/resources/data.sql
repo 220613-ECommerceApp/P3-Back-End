@@ -92,3 +92,38 @@ INSERT INTO users (id, email, password, username) VALUES (
     'pass',
     'test'
 );
+
+INSERT INTO orderhistory_item (product_id, user_id, quantity, purchase_time) VALUES (
+    1,
+    1,
+    10,
+    CURRENT_TIMESTAMP
+);
+
+INSERT INTO orderhistory_item (product_id, user_id, quantity, purchase_time) VALUES (
+    2,
+    1,
+    20,
+    CURRENT_TIMESTAMP
+);
+
+INSERT INTO orderhistory_item (product_id, user_id, quantity, purchase_time) VALUES (
+    3,
+    1,
+    30,
+    CURRENT_TIMESTAMP
+);
+
+INSERT INTO orderhistory_item (product_id, user_id, quantity, purchase_time) VALUES (
+    4,
+    1,
+    40,
+    CURRENT_TIMESTAMP
+);
+
+INSERT INTO orderhistory_item (product_id, user_id, quantity, purchase_time) VALUES (
+    5,
+    1,
+    50,
+    CURRENT_TIMESTAMP
+);
