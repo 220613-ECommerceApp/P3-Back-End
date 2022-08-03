@@ -3,6 +3,7 @@ package com.revature.repositories;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import com.revature.models.Product;
 
@@ -30,10 +31,11 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
    public List<Product> findBySimilarName(String pattern);
 
    public List<Product> findByDescriptionContainingIgnoreCase(
-         String description);    @Query("SELECT p FROM products p WHERE p.price BETWEEN startPrice AND endPrice")
-
-   public List<Product> priceRangeSearch(double startPrice, double endPrice);
-
-   @Query("SELECT p FROM products p WHERE p.id = " + "(SELECT product_id FROM products_tags WHERE tag_name = tagName)")
-	public List<Product> tagSearch(String tagName);
+         String description);    
+   
+   @Query(value = "SELECT FROM products WHERE price BETWEEN :startPrice AND :endPrice", nativeQuery = true)
+   public List<Product> priceRangeSearch(@Param("startPrice") double startPrice, @Param("endPrice")double endPrice);
+   
+   @Query(value = "SELECT FROM products WHERE id = " + "(SELECT id FROM products_tags WHERE tag_name = :tagName)", nativeQuery = true)
+	public List<Product> tagSearch(@Param("tagName") String tagName);
 }
