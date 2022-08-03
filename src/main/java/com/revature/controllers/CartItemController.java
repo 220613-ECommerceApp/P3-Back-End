@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,7 @@ public class CartItemController {
 	}
 
 	@Authorized
+	@Transactional
 	@PostMapping("/addtocart/{productid}")
 	public ResponseEntity<CartItem> addToCart(@PathVariable("productid") int productid, @RequestHeader int userid,
 			@RequestHeader int quantity) {
@@ -38,6 +40,7 @@ public class CartItemController {
 
 	// All counts of a single item
 	@Authorized
+	@Transactional
 	@PostMapping("/removefromcart/{productid}")
 	public ResponseEntity<CartItem> removeFromCart(@PathVariable("productid") int productid,
 			@RequestHeader int userid) {
@@ -47,6 +50,7 @@ public class CartItemController {
 
 	// Quantity = the new updated quantity
 	@Authorized
+	@Transactional
 	@PutMapping("/updatecart/{productid}")
 	public ResponseEntity<CartItem> changeQuantity(@PathVariable("productid") int productid,
 			@RequestHeader int userid, @RequestHeader int quantity) {
