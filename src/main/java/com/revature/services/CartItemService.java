@@ -26,7 +26,7 @@ public class CartItemService {
 
 	//Might not need this
 	public CartItem createCart(int userId) {
-		User u = userRepository.findById(userId).get();
+		User u = userRepository.findById(userId);
 		CartItem ci = new CartItem();
 		ci.setUser(u);
 		return cartItemRepository.save(ci);
