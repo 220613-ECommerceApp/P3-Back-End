@@ -1,51 +1,51 @@
-CREATE TABLE Products (
+CREATE TABLE products (
 	id SERIAL PRIMARY KEY,
-	name varchar(20),
-	Price float,
-	Quantity int,
-	ImageURL varchar(50),
-	Description varchar(100)
+	name varchar(255),
+	price float,
+	quantity int,
+	image_url varchar(255),
+	description varchar(255)
 );
 
 CREATE TABLE users (
 	id serial PRIMARY KEY,
 	username varchar(20),
-	pword varchar(20),
-	Email varchar(30)
+	password varchar(30),
+	email varchar(30)
 );
 
 CREATE TABLE cart_item (
 	id serial PRIMARY KEY,
-	product_id int, FOREIGN KEY (product_id) REFERENCES Products(id),
+	product_id int, FOREIGN KEY (product_id) REFERENCES products(id),
 	user_id int, FOREIGN KEY (user_id) REFERENCES users(id),
 	quantity int
 );
 
 CREATE TABLE wishlist_item (
 	id serial PRIMARY KEY,
-	product_id int, FOREIGN KEY (product_id) REFERENCES Products(id),
+	product_id int, FOREIGN KEY (product_id) REFERENCES products(id),
 	user_id int, FOREIGN KEY (user_id) REFERENCES users(id),
 	quantity int
 );
 
 CREATE TABLE orderhistory_item (
 	id serial PRIMARY KEY,
-	product_id int, FOREIGN KEY (product_id) REFERENCES Products(id),
+	product_id int, FOREIGN KEY (product_id) REFERENCES products(id),
 	user_id int, FOREIGN KEY (user_id) REFERENCES users(id),
 	quantity int,
 	purchase_time timestamp
 );
 
-CREATE TABLE Tag (
+CREATE TABLE tag (
 	name varchar(20) PRIMARY KEY 
 );
 
 CREATE TABLE tag_junction(
-	product_id int, FOREIGN KEY (product_id) REFERENCES Products(id),
-	tag_name varchar(20), FOREIGN KEY (tag_name) REFERENCES Tag(name)
+	product_id int, FOREIGN KEY (product_id) REFERENCES products(id),
+	tag_name varchar(20), FOREIGN KEY (tag_name) REFERENCES tag(name)
 );
 
-INSERT INTO product (id, quantity, price, description, image, name) VALUES (
+INSERT INTO products (id, quantity, price, description, image_url, name) VALUES (
     1,
     10,
     20.00,
@@ -86,10 +86,9 @@ INSERT INTO product (id, quantity, price, description, image, name) VALUES (
     'Coat'
 );
 
-INSERT INTO users (id, email, password, first_name, last_name) VALUES (
+INSERT INTO users (id, email, password, username) VALUES (
     1,
     'testuser@gmail.com',
-    'password',
-    'Test',
-    'User'
+    'pass',
+    'test'
 );
