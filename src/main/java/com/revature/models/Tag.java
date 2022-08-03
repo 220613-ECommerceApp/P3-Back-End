@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 public class Tag {
 	
 	@Id
-	@Column(name = "tag_name")
+	@Column(name = "name")
 	private String name;
 
 }
