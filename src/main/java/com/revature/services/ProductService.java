@@ -1,14 +1,17 @@
 package com.revature.services;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.revature.dtos.ProductInfo;
 import com.revature.models.Product;
@@ -28,7 +31,11 @@ public class ProductService {
 	}
 
 	public List<Product> findByDescription(String description) {
-		return productRepository.findByDescriptionContainingIgnoreCase(description);
+		String searchQuery = Arrays.stream(description.split(" "))
+				.map(String::trim)
+				.filter(word -> !word.isEmpty())
+				.collect(Collectors.joining("|", "(", ")"));
+		return productRepository.findByDescriptionContainingIgnoreCase(searchQuery);
 	}
 
 	public List<Product> findAll() {
@@ -52,13 +59,17 @@ public class ProductService {
 	}
 
 	public Set<Product> findBySimilarNameDescription(String input) {
+		String searchQuery = Arrays.stream(input.split(" "))
+				.map(String::trim)
+				.filter(word -> !word.isEmpty())
+				.collect(Collectors.joining("|", "(", ")"));
 
 		List<Product> allProd = new ArrayList<Product>(pRepo.findAll());
 
 		Set<Product> filteredProds = new HashSet<Product>();
 
-		filteredProds.addAll(pRepo.findBySimilarName(input));
-		filteredProds.addAll(pRepo.findByDescriptionContainingIgnoreCase(input));
+		filteredProds.addAll(pRepo.findBySimilarName(searchQuery));
+		filteredProds.addAll(pRepo.findByDescriptionContainingIgnoreCase(searchQuery));
 
 		for (Product p : allProd) {
 			String pName = p.getName();
