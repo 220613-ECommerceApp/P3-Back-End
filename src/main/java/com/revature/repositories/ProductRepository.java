@@ -20,7 +20,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
       @Query(value = "SELECT * FROM products WHERE price BETWEEN :startPrice AND :endPrice", nativeQuery = true)
       public List<Product> priceRangeSearch(@Param("startPrice") double startPrice, @Param("endPrice") double endPrice);
 
-      @Query(value = "SELECT FROM products WHERE id = "
-                  + "(SELECT id FROM products_tags WHERE tag_name = :tagName)", nativeQuery = true)
+      @Query(value = "SELECT * FROM products WHERE id IN "
+                  + "(SELECT product_id FROM tag_junction WHERE tag_name = :tagName)", nativeQuery = true)
       public List<Product> tagSearch(@Param("tagName") String tagName);
 }
