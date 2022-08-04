@@ -24,9 +24,9 @@ public class JWTUtil {
     public static String generateUserToken(User user) {
         
         String jws = Jwts.builder()
-            .setSubject(user.getUsername())
+            .setSubject(Integer.toString(user.getId()))
             .claim("email", user.getEmail())
-            .claim("address", user.getId())
+            .claim("username", user.getUsername())
             .signWith(key)
             .compact();
         return jws;
