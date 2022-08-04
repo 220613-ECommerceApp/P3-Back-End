@@ -22,8 +22,6 @@ import com.revature.repositories.ProductRepository;
 public class ProductService {
 
 	@Autowired
-	ProductRepository pRepo;
-
 	private final ProductRepository productRepository;
 
 	public ProductService(ProductRepository productRepository) {
@@ -64,12 +62,12 @@ public class ProductService {
 				.filter(word -> !word.isEmpty())
 				.collect(Collectors.joining("|", "(", ")"));
 
-		List<Product> allProd = new ArrayList<Product>(pRepo.findAll());
+		List<Product> allProd = new ArrayList<Product>(productRepository.findAll());
 
 		Set<Product> filteredProds = new HashSet<Product>();
 
-		filteredProds.addAll(pRepo.findBySimilarName(searchQuery));
-		filteredProds.addAll(pRepo.findByDescriptionContainingIgnoreCase(searchQuery));
+		filteredProds.addAll(productRepository.findBySimilarName(searchQuery));
+		filteredProds.addAll(productRepository.findByDescriptionContainingIgnoreCase(searchQuery));
 
 		for (Product p : allProd) {
 			String pName = p.getName();
