@@ -1,25 +1,18 @@
 package com.revature.controllers;
 
-import java.security.cert.PKIXRevocationChecker.Option;
 import java.util.Optional;
-
-import javax.servlet.http.HttpSession;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.annotations.Authorized;
-import com.revature.models.Product;
-import com.revature.models.User;
 import com.revature.models.WishListItem;
-import com.revature.services.UserService;
 import com.revature.services.WishListItemService;
+import com.revature.utils.JWTUtil;
 
 @RestController
 @RequestMapping("/api")
@@ -33,31 +26,10 @@ public class WishListItemController {
     }
 
     @Authorized
-    @PostMapping("/create-wishlist")
-    public ResponseEntity<Optional<WishListItem>> makeWishList(HttpSession session) {
-        User u = (User) session.getAttribute("user");
-        return ResponseEntity.ok(wishListItemService.addToWishList());
-    }
-
-    @Authorized
-    @GetMapping(path = "/get-wishlist")
-    public ResponseEntity<Optional<WishListItem>> getWishList(HttpSession session) {
-        Optional<WishListItem>  = WishListItemService.getById();
-        return ResponseEntity.ok(wishListItemService.findWishListById(u.getId()));
-    }
-
-    @Authorized
-    @PutMapping("/update-wishlist")
-    public ResponseEntity<Optional<WishListItem>> updateWishList(HttpSession session) {
-        User u = (User) session.getAttribute("user");
-        return ResponseEntity.ok(wishListItemService.findWishListById(u.getId()));
-    }
-
-    @Authorized
-    @DeleteMapping("/clear-wishlist")
-    public ResponseEntity<Optional<WishListItem>> clearWishList(HttpSession session) {
-        User u = (User) session.getAttribute("user");
-        return ResponseEntity.ok(wishListItemService.findWishListById(u.getId()));
+    @GetMapping("/wishlist")
+    public ResponseEntity<Optional<WishListItem>> getWishList(@RequestHeader("Authorization") String authToken) {
+        int id = JWTUtil.verifyUserToken(authToken);
+        return ResponseEntity.ok(wishListItemService.findWishListById(id));
     }
 
 }
