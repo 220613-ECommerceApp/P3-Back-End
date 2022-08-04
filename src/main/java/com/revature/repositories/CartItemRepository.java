@@ -33,4 +33,9 @@ public interface CartItemRepository extends JpaRepository<CartItem, Integer> {
 	@Query(value = "SELECT * FROM cart_item WHERE user_id = ?1", nativeQuery = true)
 	public List<CartItem> findListByUserId(int id);
 
+	// clear the cart for a specific user
+	@Modifying
+	@Query(value = "DELETE FROM cart_item WHERE user_id = ?1", nativeQuery = true)
+	void clearCartForUser(int userid);
+
 }
