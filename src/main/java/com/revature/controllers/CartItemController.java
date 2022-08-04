@@ -22,7 +22,7 @@ import com.revature.utils.JWTUtil;
 
 @RestController
 @RequestMapping("/api/cart")
-@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:3000" }, allowCredentials = "true")
+@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:3000", "http://propanegaming.s3-website.us-east-2.amazonaws.com" }, allowCredentials = "true")
 public class CartItemController {
 
 	private final CartItemService cis;
