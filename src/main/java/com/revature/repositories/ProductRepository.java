@@ -27,10 +27,10 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
        * returns a list of products where the similarity between input and db name is
        * >2 based on the SOUNDEX function
        */
-      @Query("FROM Product WHERE name LIKE %:pattern%")
+      @Query("FROM Product WHERE lower(name) LIKE lower(concat('%', ?1, '%'))")
       public List<Product> findBySimilarName(String pattern);
 
-      @Query("FROM Product WHERE description LIKE %:description%")
+      @Query("FROM Product WHERE lower(description) LIKE lower(concat('%', ?1, '%'))")
       public List<Product> findByDescriptionContainingIgnoreCase(
                   String description);
 

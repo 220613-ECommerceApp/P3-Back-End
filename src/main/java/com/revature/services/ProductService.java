@@ -85,6 +85,9 @@ public class ProductService {
    
    
    public Set<Product> findBySimilarNameDescription(String input) {
+	   
+	   
+	   
 	   List<Product> allProd = new ArrayList<Product>(pRepo.findAll());
 	   
 		Set<Product> filteredProds = new HashSet<Product>();
@@ -110,8 +113,7 @@ public class ProductService {
 					}
 				}
 			}
-			if (dist[p.getName().length() - 1][input.length() - 1] <= (p.getName()).length() / 2
-					|| filteredProds.contains(p)) {
+			if (dist[p.getName().length() - 1][input.length() - 1] <= (((input.length())<5) ? 5:(input.length()/2)))  {
 				filteredProds.add(p);
 			}
 		}
