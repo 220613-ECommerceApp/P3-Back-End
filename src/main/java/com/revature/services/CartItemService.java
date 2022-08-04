@@ -24,43 +24,41 @@ public class CartItemService {
 		this.userRepository = userRepository;
 	}
 
-	//Might not need this
+	// Might not need this
 	public CartItem createCart(int userId) {
 		User u = userRepository.findById(userId);
 		CartItem ci = new CartItem();
 		ci.setUser(u);
 		return cartItemRepository.save(ci);
 	}
-	
+
 	public CartItem addItemToCart(int productid, int userId, int quantity) {
-		cartItemRepository.addToCart(userId, productid,quantity);
+		cartItemRepository.addToCart(userId, productid, quantity);
 		CartItem ci = cartItemRepository.findByUserIdAndProductId(userId, productid);
- 		return ci;
+		return ci;
 	}
-	
+
 	public CartItem removeItem(int productid, int userid) {
 		cartItemRepository.deleteProductFromCart(productid, userid);
 		CartItem ci = cartItemRepository.findByUserIdAndProductId(userid, productid);
 		return ci;
-		
+
 	}
-	
+
 	public CartItem updateItemQuantity(int quantity, int productid, int userid) {
-		 cartItemRepository.updateQuantityInCart(quantity, productid, userid);
-		CartItem ci = cartItemRepository.findByUserIdAndProductId(userid,productid);
-		return ci;
-		 
-	}
-	
-	public List<CartItem> getByUserId(int id){
-		return cartItemRepository.findListByUserId(id);
-	}
-	
-	public CartItem clearCart(int productid, int userid) {
-		cartItemRepository.clearCartForUser(userid);
+		cartItemRepository.updateQuantityInCart(quantity, productid, userid);
 		CartItem ci = cartItemRepository.findByUserIdAndProductId(userid, productid);
 		return ci;
+
 	}
- 
+
+	public List<CartItem> getByUserId(int id) {
+		return cartItemRepository.findListByUserId(id);
+	}
+
+	public List<CartItem> clearCart(int userid) {
+		cartItemRepository.clearCartForUser(userid);
+		return cartItemRepository.findListByUserId(userid);
+	}
 
 }

@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -62,6 +63,13 @@ public class CartItemController {
     @GetMapping("{userid}")
     public ResponseEntity<List<CartItem>> getCart(@PathVariable("userid") int userid) {
             return ResponseEntity.ok(cis.getByUserId(userid));
+    }
+	
+	@Authorized
+	@Transactional
+    @DeleteMapping("/clear/{userid}")
+    public ResponseEntity<List<CartItem>> clearTheCart(@PathVariable("userid") int userid) {
+            return ResponseEntity.ok(cis.clearCart(userid));
     }
 	
 }
