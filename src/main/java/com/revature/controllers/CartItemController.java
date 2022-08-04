@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.revature.annotations.Authorized;
 import com.revature.models.CartItem;
 import com.revature.services.CartItemService;
+import com.revature.utils.JWTUtil;
 
 @RestController
 @RequestMapping("/api/cart")
@@ -33,8 +34,9 @@ public class CartItemController {
 	@Authorized
 	@Transactional
 	@PostMapping("/addtocart/{productid}")
-	public ResponseEntity<CartItem> addToCart(@PathVariable("productid") int productid, @RequestHeader int userid,
-			@RequestHeader int quantity) {
+	public ResponseEntity<CartItem> addToCart(@PathVariable("productid") int productid,
+			@RequestHeader("Authorization") String token, @RequestHeader int quantity) {
+		int userid = JWTUtil.verifyUserToken(token);
 		CartItem ci = cis.addItemToCart(productid, userid, quantity);
 		return new ResponseEntity<CartItem>(ci, HttpStatus.OK);
 	}
@@ -44,7 +46,8 @@ public class CartItemController {
 	@Transactional
 	@PostMapping("/removefromcart/{productid}")
 	public ResponseEntity<CartItem> removeFromCart(@PathVariable("productid") int productid,
-			@RequestHeader int userid) {
+			@RequestHeader("Authorization") String token) {
+		int userid = JWTUtil.verifyUserToken(token);
 		CartItem ci = cis.removeItem(productid, userid);
 		return new ResponseEntity<CartItem>(ci, HttpStatus.OK);
 	}
@@ -54,22 +57,25 @@ public class CartItemController {
 	@Transactional
 	@PutMapping("/updatecart/{productid}")
 	public ResponseEntity<CartItem> changeQuantity(@PathVariable("productid") int productid,
-			@RequestHeader int userid, @RequestHeader int quantity) {
+			@RequestHeader("Authorization") String token, @RequestHeader int quantity) {
+		int userid = JWTUtil.verifyUserToken(token);
 		CartItem ci = cis.updateItemQuantity(quantity, productid, userid);
 		return new ResponseEntity<CartItem>(ci, HttpStatus.OK);
 	}
 
 	@Authorized
-    @GetMapping("{userid}")
-    public ResponseEntity<List<CartItem>> getCart(@PathVariable("userid") int userid) {
-            return ResponseEntity.ok(cis.getByUserId(userid));
-    }
-	
+	@GetMapping
+	public ResponseEntity<List<CartItem>> getCart(@RequestHeader("Authorization") String token) {
+		int userid = JWTUtil.verifyUserToken(token);
+		return ResponseEntity.ok(cis.getByUserId(userid));
+	}
+
 	@Authorized
 	@Transactional
-    @DeleteMapping("/clear/{userid}")
-    public ResponseEntity<List<CartItem>> clearTheCart(@PathVariable("userid") int userid) {
-            return ResponseEntity.ok(cis.clearCart(userid));
-    }
-	
+	@DeleteMapping("/clear")
+	public ResponseEntity<List<CartItem>> clearTheCart(@RequestHeader("Authorization") String token) {
+		int userid = JWTUtil.verifyUserToken(token);
+		return ResponseEntity.ok(cis.clearCart(userid));
+	}
+
 }
