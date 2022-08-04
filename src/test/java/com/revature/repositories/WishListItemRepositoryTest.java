@@ -24,11 +24,11 @@ import com.revature.models.WishListItem;
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 public class WishListItemRepositoryTest {
     
-    @MockBean
+    @Autowired
     private WishListItemRepository underTest;
-    @MockBean
+    @Autowired
     private UserRepository uR;
-    @MockBean
+    @Autowired
     private ProductRepository pR;
 
     @Test
@@ -46,6 +46,7 @@ public class WishListItemRepositoryTest {
         // When
         pR.save(dP);
         uR.save(dU);
+        System.out.println(pR.findAll());
         underTest.save(wLi);
 
         // Then
