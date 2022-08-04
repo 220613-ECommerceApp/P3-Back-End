@@ -59,13 +59,17 @@ public class ProductService {
 	}
 
 	public Set<Product> findBySimilarNameDescription(String input) {
+		String searchQuery = Arrays.stream(input.split(" "))
+				.map(String::trim)
+				.filter(word -> !word.isEmpty())
+				.collect(Collectors.joining("|", "(", ")"));
 
 		List<Product> allProd = new ArrayList<Product>(pRepo.findAll());
 
 		Set<Product> filteredProds = new HashSet<Product>();
 
-		filteredProds.addAll(pRepo.findBySimilarName(input));
-		filteredProds.addAll(pRepo.findByDescriptionContainingIgnoreCase(input));
+		filteredProds.addAll(pRepo.findBySimilarName(searchQuery));
+		filteredProds.addAll(pRepo.findByDescriptionContainingIgnoreCase(searchQuery));
 
 		for (Product p : allProd) {
 			String pName = p.getName();

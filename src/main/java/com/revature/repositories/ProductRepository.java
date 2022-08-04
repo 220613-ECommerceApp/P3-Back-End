@@ -10,8 +10,8 @@ import com.revature.models.Product;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
-      @Query("FROM Product WHERE lower(name) LIKE lower(concat('%', ?1, '%'))")
-      public List<Product> findBySimilarName(String pattern);
+      @Query(value = "select * from products where lower(name) ~* :pattern", nativeQuery = true)
+      public List<Product> findBySimilarName(@Param("pattern") String pattern);
 
       @Query(value = "select * from products where lower(description) ~* :description", nativeQuery = true)
       public List<Product> findByDescriptionContainingIgnoreCase(
