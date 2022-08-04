@@ -9,13 +9,13 @@ import com.revature.models.Product;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
-     
+
       @Query("FROM Product WHERE lower(name) LIKE lower(concat('%', ?1, '%'))")
       public List<Product> findBySimilarName(String pattern);
 
-      @Query("FROM Product WHERE lower(description) LIKE lower(concat('%', ?1, '%'))")
+      @Query(value = "select * from products where lower(description) ~* :description", nativeQuery = true)
       public List<Product> findByDescriptionContainingIgnoreCase(
-                  String description);
+                  @Param("description") String description);
 
       @Query(value = "SELECT FROM products WHERE price BETWEEN :startPrice AND :endPrice", nativeQuery = true)
       public List<Product> priceRangeSearch(@Param("startPrice") double startPrice, @Param("endPrice") double endPrice);

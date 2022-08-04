@@ -100,7 +100,6 @@ public class ProductController {
 		return ResponseEntity.ok(productService.findBySimilarNameDescription(input));
 	}
 
-	@Authorized
 	@GetMapping("/search/description/{query}")
 	public ResponseEntity<List<Product>> searchByDescription(@PathVariable("query") String query) {
 		List<Product> productList = productService.findByDescription(query);
