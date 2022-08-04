@@ -5,7 +5,9 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,4 +51,32 @@ public class ProductServiceTest {
       List<Product> resultList = productService.findByDescription("GTA 5");
       assertEquals(0, resultList.size());
    }
+   
+   @Test
+   void findBySimilarNameDescriptionShouldReturnAMatch() {
+	   Product testProduct = new Product();
+	   testProduct.setDescription("A reusable shopping bag");
+	   testProduct.setName("Shopping Bag");
+	   
+	   List<Product> testList = new ArrayList<>();
+	      testList.add(testProduct);
+	      
+	      when(productRepository.findAll()).thenReturn(testList);
+	      when(productRepository.findByDescriptionContainingIgnoreCase("(bAg)")).thenReturn(testList);
+	      when(productRepository.findBySimilarName("(bAg)")).thenReturn(testList);
+	      
+	      Set<Product> resultSet = new HashSet<Product>(productService.findBySimilarNameDescription("bAg"));
+	      
+	      assertEquals(1, resultSet.size());
+	      assertEquals(true, resultSet.contains(testProduct));
+   }
+   
+   @Test
+   void findBySimilarNameDescriptionShouldReturnEmtpyIfNoMatch() {
+      when(productRepository.findBySimilarName("(GTA|5)"))
+            .thenReturn(Collections.<Product>emptyList());
+      Set<Product> resultList = new HashSet<Product>(productService.findBySimilarNameDescription("GTA 5"));
+      assertEquals(0, resultList.size());
+   }
+   
 }
