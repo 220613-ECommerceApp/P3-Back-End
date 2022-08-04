@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +31,6 @@ public class CartItemController {
 	}
 
 	@Authorized
-	@Transactional
 	@PostMapping("/addtocart/{productid}")
 	public ResponseEntity<CartItem> addToCart(@PathVariable("productid") int productid,
 			@RequestHeader("Authorization") String token, @RequestHeader int quantity) {
@@ -43,7 +41,6 @@ public class CartItemController {
 
 	// All counts of a single item
 	@Authorized
-	@Transactional
 	@PostMapping("/removefromcart/{productid}")
 	public ResponseEntity<CartItem> removeFromCart(@PathVariable("productid") int productid,
 			@RequestHeader("Authorization") String token) {
@@ -54,7 +51,6 @@ public class CartItemController {
 
 	// Quantity = the new updated quantity
 	@Authorized
-	@Transactional
 	@PutMapping("/updatecart/{productid}")
 	public ResponseEntity<CartItem> changeQuantity(@PathVariable("productid") int productid,
 			@RequestHeader("Authorization") String token, @RequestHeader int quantity) {
@@ -71,7 +67,6 @@ public class CartItemController {
 	}
 
 	@Authorized
-	@Transactional
 	@DeleteMapping("/clear")
 	public ResponseEntity<List<CartItem>> clearTheCart(@RequestHeader("Authorization") String token) {
 		int userid = JWTUtil.verifyUserToken(token);
