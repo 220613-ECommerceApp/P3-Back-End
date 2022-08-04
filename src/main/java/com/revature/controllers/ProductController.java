@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.annotations.Authorized;
@@ -106,6 +107,16 @@ public class ProductController {
 		List<Product> productList = productService.findByDescription(query);
 		if (productList.size() == 0) {
 			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(productList);
+	}
+
+	@GetMapping("search/price")
+	public ResponseEntity<List<Product>> searchByPriceRange(@RequestParam double startPrice,
+			@RequestParam double endPrice) {
+		List<Product> productList = productService.searchByPriceRange(startPrice, endPrice);
+		if (productList.size() == 0) {
+			return ResponseEntity.status(204).build();
 		}
 		return ResponseEntity.ok(productList);
 	}
