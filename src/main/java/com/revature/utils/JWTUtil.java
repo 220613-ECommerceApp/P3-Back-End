@@ -33,11 +33,15 @@ public class JWTUtil {
     }
 
     // taken from io.jsonwebtoken documentation 
-    public static String verifyUserToken(String token) {
+    public static int verifyUserToken(String authToken) {
+        String token = authToken.split(" ")[1];
+
         Jws<Claims> jws = Jwts.parserBuilder()
             .setSigningKey(key)
             .build()        
             .parseClaimsJws(token);
-        return jws.getBody().get("sub").toString();
+
+        return Integer.parseInt(jws.getBody().get("sub").toString());
     }
+
 }

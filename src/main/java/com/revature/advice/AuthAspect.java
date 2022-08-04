@@ -47,11 +47,12 @@ public class AuthAspect {
     @Around("@annotation(authorized)")
     public Object authenticate(ProceedingJoinPoint pjp, Authorized authorized) throws Throwable {
         try {
-            String[] token = req.getHeader("Authorization").split(" ");
+            String t = req.getHeader("Authorization");
+            String[] token = t.split(" ");
             if(!token[0].equals("Bearer")) {
                 throw new Exception();
             }
-            JWTUtil.verifyUserToken(token[1]);
+            JWTUtil.verifyUserToken(t);
             return pjp.proceed(pjp.getArgs()); // Call the originally intended method
         } catch (Exception e) {
             throw new NotLoggedInException("Must be logged in to perform this action");
