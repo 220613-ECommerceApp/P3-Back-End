@@ -15,7 +15,7 @@ public class OrderHistoryService {
         this.orderHistoryItemRepository = orderHistoryItemRepository;
     }
     
-    public List<OrderHistoryItem> findById(int id){
+    public List<OrderHistoryItem> findByUserId(int id){
         return orderHistoryItemRepository.findByUserId(id);
     }
 }

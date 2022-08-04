@@ -127,3 +127,18 @@ INSERT INTO orderhistory_item (product_id, user_id, quantity, purchase_time) VAL
     50,
     CURRENT_TIMESTAMP
 );
+
+
+INSERT INTO tag (name) VALUES (
+    'bryan'
+);
+
+INSERT INTO tag_junction (product_id, tag_name)  VALUES (
+    4,
+    'bryan'
+);
+
+INSERT INTO tag_junction (product_id, tag_name)  VALUES (
+    3,
+    'bryan'
+);
