@@ -94,10 +94,10 @@ public class ProductController {
 		return ResponseEntity.ok(optional.get());
 	}
 
-	@GetMapping("/search/{name}")
-	public ResponseEntity<Set<Product>> getBySimilarName(@PathVariable("name") String name) {
+	@GetMapping("/search/{input}")
+	public ResponseEntity<Set<Product>> getBySimilarNameDescription(@PathVariable("input") String input) {
 
-		return ResponseEntity.ok(productService.findBySimilarName(name));
+		return ResponseEntity.ok(productService.findBySimilarNameDescription(input));
 	}
 
 	@Authorized
