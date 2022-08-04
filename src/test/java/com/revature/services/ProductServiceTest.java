@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -34,7 +35,7 @@ public class ProductServiceTest {
 
       List<Product> testList = new ArrayList<>();
       testList.add(testProduct);
-      when(productRepository.findByDescriptionContainingIgnoreCase("bAg")).thenReturn(testList);
+      when(productRepository.findByDescriptionContainingIgnoreCase("(bAg)")).thenReturn(testList);
 
       List<Product> resultList = productService.findByDescription("bAg");
       assertEquals(1, resultList.size());
@@ -43,6 +44,8 @@ public class ProductServiceTest {
 
    @Test
    void findByDescriptionContainingShouldReturnEmtpyIfNoMatch() {
+      when(productRepository.findByDescriptionContainingIgnoreCase("(GTA|5)"))
+            .thenReturn(Collections.<Product>emptyList());
       List<Product> resultList = productService.findByDescription("GTA 5");
       assertEquals(0, resultList.size());
    }
