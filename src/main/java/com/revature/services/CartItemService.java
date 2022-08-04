@@ -56,6 +56,11 @@ public class CartItemService {
 		return cartItemRepository.findListByUserId(id);
 	}
 	
+	public CartItem clearCart(int productid, int userid) {
+		cartItemRepository.clearCartForUser(userid);
+		CartItem ci = cartItemRepository.findByUserIdAndProductId(userid, productid);
+		return ci;
+	}
  
 
 }
