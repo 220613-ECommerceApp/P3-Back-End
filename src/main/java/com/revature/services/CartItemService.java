@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.revature.models.CartItem;
 import com.revature.models.User;
@@ -32,12 +33,14 @@ public class CartItemService {
 		return cartItemRepository.save(ci);
 	}
 
+	@Transactional
 	public CartItem addItemToCart(int productid, int userId, int quantity) {
 		cartItemRepository.addToCart(userId, productid, quantity);
 		CartItem ci = cartItemRepository.findByUserIdAndProductId(userId, productid);
 		return ci;
 	}
 
+	@Transactional
 	public CartItem removeItem(int productid, int userid) {
 		cartItemRepository.deleteProductFromCart(productid, userid);
 		CartItem ci = cartItemRepository.findByUserIdAndProductId(userid, productid);
@@ -45,6 +48,7 @@ public class CartItemService {
 
 	}
 
+	@Transactional
 	public CartItem updateItemQuantity(int quantity, int productid, int userid) {
 		cartItemRepository.updateQuantityInCart(quantity, productid, userid);
 		CartItem ci = cartItemRepository.findByUserIdAndProductId(userid, productid);
@@ -56,6 +60,7 @@ public class CartItemService {
 		return cartItemRepository.findListByUserId(id);
 	}
 
+	@Transactional
 	public List<CartItem> clearCart(int userid) {
 		cartItemRepository.clearCartForUser(userid);
 		return cartItemRepository.findListByUserId(userid);
