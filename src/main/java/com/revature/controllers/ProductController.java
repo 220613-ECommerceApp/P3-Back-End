@@ -120,4 +120,13 @@ public class ProductController {
 		}
 		return ResponseEntity.ok(productList);
 	}
+
+	@GetMapping("search/tag/{tagName}")
+	public ResponseEntity<List<Product>> searchByTag(@PathVariable("tagName") String tagName) {
+		List<Product> productList = productService.searchByTag(tagName);
+		if (productList.size() == 0) {
+			return ResponseEntity.status(204).build();
+		}
+		return ResponseEntity.ok(productList);
+	}
 }

@@ -86,4 +86,8 @@ public class ProductService {
 	public List<Product> searchByPriceRange(double startPrice, double endPrice) {
 		return productRepository.priceRangeSearch(startPrice, endPrice);
 	}
+
+	public List<Product> searchByTag(String tagName) {
+		return productRepository.tagSearch(tagName);
+	}
 }
