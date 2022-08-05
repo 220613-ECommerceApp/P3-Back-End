@@ -106,4 +106,15 @@ class ProductControllerTest {
             assertEquals(1, products.size());
             assertEquals("Baseball Cap", products.get(0).getName());
       }
+
+      @Test
+      void shouldReturnStatus204IfSearchFoundNothing() throws Exception {
+            MvcResult result = mockMvc.perform(get("/api/product/search/description/{query}", "PIKACHU!!!!")
+                        .header("authorization", "Bearer " + token))
+                        .andExpect(status().is(204))
+                        .andReturn();
+
+            int status = result.getResponse().getStatus();
+            assertEquals(204, status);
+      }
 }
