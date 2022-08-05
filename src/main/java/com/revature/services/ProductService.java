@@ -1,14 +1,17 @@
 package com.revature.services;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.revature.dtos.ProductInfo;
 import com.revature.models.Product;
@@ -19,8 +22,6 @@ import com.revature.repositories.ProductRepository;
 public class ProductService {
 
 	@Autowired
-	ProductRepository pRepo;
-
 	private final ProductRepository productRepository;
 
 	public ProductService(ProductRepository productRepository) {
@@ -28,7 +29,11 @@ public class ProductService {
 	}
 
 	public List<Product> findByDescription(String description) {
-		return productRepository.findByDescriptionContainingIgnoreCase(description);
+		String searchQuery = Arrays.stream(description.split(" "))
+				.map(String::trim)
+				.filter(word -> !word.isEmpty())
+				.collect(Collectors.joining("|", "(", ")"));
+		return productRepository.findByDescriptionContainingIgnoreCase(searchQuery);
 	}
 
 	public List<Product> findAll() {
@@ -51,25 +56,27 @@ public class ProductService {
 		productRepository.deleteById(id);
 	}
 
-	
 	public Set<Product> findBySimilarNameDescription(String input) {
+		String searchQuery = Arrays.stream(input.split(" "))
+				.map(String::trim)
+				.filter(word -> !word.isEmpty())
+				.collect(Collectors.joining("|", "(", ")"));
 
-		List<Product> allProd = new ArrayList<Product>(pRepo.findAll());
+		List<Product> allProd = new ArrayList<Product>(productRepository.findAll());
 
 		Set<Product> filteredProds = new HashSet<Product>();
 
-		filteredProds.addAll(pRepo.findBySimilarName(input));
-		filteredProds.addAll(pRepo.findByDescriptionContainingIgnoreCase(input));
-
+		filteredProds.addAll(productRepository.findBySimilarName(searchQuery));
+		filteredProds.addAll(productRepository.findByDescriptionContainingIgnoreCase(searchQuery));
 
 		for (Product p : allProd) {
 			String pName = p.getName();
 			int[][] dist = new int[pName.length()][input.length()];
 
-			for (int i = 0; i <pName.length(); i++) {
+			for (int i = 0; i < pName.length(); i++) {
 				for (int j = 0; j < input.length(); j++) {
-					if (i*j==0) {
-						dist[i][j] = (i==0?j:i);
+					if (i * j == 0) {
+						dist[i][j] = (i == 0 ? j : i);
 					} else {
 						dist[i][j] = Math.min(Math.min(
 								dist[i - 1][j - 1] + ((pName.charAt(i - 1) == input.charAt(j - 1)) ? 0 : 1),
@@ -77,11 +84,19 @@ public class ProductService {
 					}
 				}
 			}
-			if (dist[pName.length() - 1][input.length() - 1] <= pName.length()/2) {
+			if (dist[pName.length() - 1][input.length() - 1] <= pName.length() / 2) {
 				filteredProds.add(p);
 			}
 		}
 		return filteredProds;
 
+	}
+
+	public List<Product> searchByPriceRange(double startPrice, double endPrice) {
+		return productRepository.priceRangeSearch(startPrice, endPrice);
+	}
+
+	public List<Product> searchByTag(String tagName) {
+		return productRepository.tagSearch(tagName);
 	}
 }
