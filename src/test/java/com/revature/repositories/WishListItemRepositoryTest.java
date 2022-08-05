@@ -9,7 +9,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
@@ -46,19 +45,28 @@ public class WishListItemRepositoryTest {
         // When
         pR.save(dP);
         uR.save(dU);
-        System.out.println(pR.findAll());
         underTest.save(wLi);
 
         // Then
         int userId = wLi.getUser().getId();
+        int wId = wLi.getId();
         Optional<WishListItem> optionalWishListItem = underTest.findByUserId(userId);
-        assertThat(optionalWishListItem.isPresent());
+        assertThat(optionalWishListItem)
+            .isPresent()
+            .hasValueSatisfying(w -> {
+                assertThat(w.getId()).isEqualTo(wId);
+                assertThat(w.getQuantity()).isEqualTo(23);
+                assertThat(w.getProduct()).isEqualTo(dP);
+                assertThat(w.getUser()).isEqualTo(dU);
+                assertThat(w).isSameAs(wLi);
+                assertThat(w).isSameAs(wLi);
+            });
     }
 
-    @Test
-    void testGetById() {
+    // @Test
+    // void testGetById() {
 
-    }
+    // }
 
     @Test
     void testUpdateQuantityInWishList() {
