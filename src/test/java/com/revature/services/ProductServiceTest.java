@@ -64,7 +64,7 @@ public class ProductServiceTest {
 		testProduct.setId(0);
 		Tag testTag = new Tag();
 		testTag.setName("Coding");
-		ProductTagJunction testJ = new ProductTagJunction(1, testProduct, testTag);
+		ProductTagJunction testJ = new ProductTagJunction(testProduct, testTag);
 		testJ.setId(0);
 		List<Product> testList = new ArrayList<>();
 		testList.add(testProduct);
