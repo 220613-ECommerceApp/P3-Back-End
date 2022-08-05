@@ -1,16 +1,24 @@
 package com.revature.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.revature.models.Product;
@@ -18,35 +26,156 @@ import com.revature.repositories.ProductRepository;
 
 @ExtendWith(MockitoExtension.class)
 public class ProductServiceTest {
-   @Mock
-   private ProductRepository productRepository;
+	@Mock
+	private ProductRepository productRepository;
 
-   private ProductService productService;
+	private ProductService productService;
 
-   @BeforeEach
-   void beforeEach() {
-      productService = new ProductService(productRepository);
-   }
+	@BeforeEach
+	void beforeEach() {
+		productService = new ProductService(productRepository);
+	}
 
-   @Test
-   void findByDescriptionContainingShouldReturnAMatch() {
-      Product testProduct = new Product();
-      testProduct.setDescription("A reusable shopping bag");
+	@Test
+	void findByDescriptionContainingShouldReturnAMatch() {
+		Product testProduct = new Product();
+		testProduct.setDescription("A reusable shopping bag");
 
-      List<Product> testList = new ArrayList<>();
-      testList.add(testProduct);
-      when(productRepository.findByDescriptionContainingIgnoreCase("(bAg)")).thenReturn(testList);
+		List<Product> testList = new ArrayList<>();
+		testList.add(testProduct);
+		when(productRepository.findByDescriptionContainingIgnoreCase("(bAg)")).thenReturn(testList);
 
-      List<Product> resultList = productService.findByDescription("bAg");
-      assertEquals(1, resultList.size());
-      assertEquals("A reusable shopping bag", resultList.get(0).getDescription());
-   }
+		List<Product> resultList = productService.findByDescription("bAg");
+		assertEquals(1, resultList.size());
+		assertEquals("A reusable shopping bag", resultList.get(0).getDescription());
+	}
 
-   @Test
-   void findByDescriptionContainingShouldReturnEmtpyIfNoMatch() {
-      when(productRepository.findByDescriptionContainingIgnoreCase("(GTA|5)"))
-            .thenReturn(Collections.<Product>emptyList());
-      List<Product> resultList = productService.findByDescription("GTA 5");
-      assertEquals(0, resultList.size());
-   }
+	@Test
+	void findByDescriptionContainingShouldReturnAMatchIfInputExtraSpacesTest() {
+		Product testProduct = new Product();
+		testProduct.setDescription("A reusable shopping bag");
+
+		List<Product> testList = new ArrayList<>();
+		testList.add(testProduct);
+		when(productRepository.findByDescriptionContainingIgnoreCase("(A|reusable|bag)")).thenReturn(testList);
+
+		List<Product> resultList = productService.findByDescription("A  reusable bag");
+
+		assertEquals(1, resultList.size());
+		assertEquals("A reusable shopping bag", resultList.get(0).getDescription());
+	}
+
+	@Test
+	void findByDescriptionContainingShouldReturnEmtpyIfNoMatch() {
+		when(productRepository.findByDescriptionContainingIgnoreCase("(GTA|5)"))
+				.thenReturn(Collections.<Product>emptyList());
+		List<Product> resultList = productService.findByDescription("GTA 5");
+		assertEquals(0, resultList.size());
+	}
+
+	@Test
+	void findAllShouldReturnAllProductsTest() {
+		List<Product> productList = new ArrayList<>();
+		productList.add(new Product(1, "Pro-Pain", 20.00, 5, "String image", "3rd-person shooter"));
+		productList.add(new Product(1, "Diablo Immortal", 0.00, 100, "String image", "100% free. WOW, that's GREAT!"));
+
+		when(productRepository.findAll()).thenReturn(productList);
+
+		List<Product> actualProductList = productService.findAll();
+
+		assertEquals(2, actualProductList.size());
+		assertEquals(actualProductList, productList);
+	}
+
+	@Test
+	void findByIdShouldReturnAMatchTest() {
+		Product pDummy = new Product(1, "Pro-Pain", 20.00, 5, "String image", "3rd-person shooter");
+		int pId = pDummy.getId();
+
+		when(productRepository.findById(pId)).thenReturn(Optional.of(pDummy));
+		Optional<Product> pExpected = productService.findById(pId);
+
+		assertEquals(true, pExpected.isPresent());
+		assertEquals(pDummy, pExpected.get());
+	}
+
+	@Test
+	void saveShouldUpdateProductTest() {
+		Product pDummy = new Product(1, "Pro-Pain", 20.00, 5, "String image", "3rd-person shooter");
+		pDummy.setName("Pro-Pain 2");
+		pDummy.setPrice(59.99);
+		pDummy.setImage_url("Another image");
+
+		when(productRepository.save(pDummy)).thenReturn(pDummy);
+
+		Product pActual = productService.save(pDummy);
+
+		assertEquals(pDummy, pActual);
+	}
+
+	@Test
+	void deleteProductTest() {
+		Product pDummy = new Product(1, "Pro-Pain", 20.00, 5, "String image", "3rd-person shooter");
+
+		List<Product> pList = new LinkedList<Product>();
+		pList.add(pDummy);
+		int pDummyId = pList.get(0).getId();
+
+		assertEquals(!pList.isEmpty(), true);
+		assertEquals(pDummyId, 1);
+
+		Mockito.doNothing().when(productRepository).deleteById(pDummyId);
+
+		productService.delete(pDummyId);
+		List<Product> actual = new LinkedList<Product>(pList);
+
+		assertEquals(pList.isEmpty(), actual.isEmpty());
+	}
+	@Test
+	void findBySimilarNameDescriptionShouldReturnAMatchTest() {
+		Product testProduct = new Product();
+		testProduct.setDescription("A reusable shopping bag");
+		testProduct.setName("Shopping Bag");
+
+		List<Product> testList = new ArrayList<>();
+		testList.add(testProduct);
+
+		when(productRepository.findAll()).thenReturn(testList);
+		when(productRepository.findByDescriptionContainingIgnoreCase("(bAg)")).thenReturn(testList);
+		when(productRepository.findBySimilarName("(bAg)")).thenReturn(testList);
+
+		Set<Product> resultSet = new HashSet<Product>(productService.findBySimilarNameDescription("bAg"));
+
+		assertEquals(1, resultSet.size());
+		assertEquals(true, resultSet.contains(testProduct));
+	}
+
+	@Test
+	void findBySimilarNameDescriptionShouldReturnEmtpyIfNoMatchTest() {
+		when(productRepository.findBySimilarName("(GTA|5)")).thenReturn(Collections.<Product>emptyList());
+		Set<Product> resultList = new HashSet<Product>(productService.findBySimilarNameDescription("GTA 5"));
+		assertEquals(0, resultList.size());
+	}
+
+	@Test
+	void findBySimilarNameDescriptionShouldReturnAMatchIfInputExtraSpacesTest() {
+		Product testProduct = new Product();
+		testProduct.setDescription("A reusable shopping bag");
+		testProduct.setName("Shopping Bag");
+
+		List<Product> testList = new ArrayList<>();
+		testList.add(testProduct);
+
+		when(productRepository.findAll()).thenReturn(testList);
+		when(productRepository.findByDescriptionContainingIgnoreCase("(A|reusable|bag)")).thenReturn(testList);
+		when(productRepository.findBySimilarName("(A|reusable|bag)")).thenReturn(testList);
+
+		Set<Product> resultSet = new HashSet<Product>(productService.findBySimilarNameDescription("A  reusable bag"));
+
+		assertEquals(1, resultSet.size());
+		assertEquals(true, resultSet.contains(testProduct));
+	}
+
+	
+
 }
