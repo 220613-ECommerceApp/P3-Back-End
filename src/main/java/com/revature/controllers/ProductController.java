@@ -24,7 +24,8 @@ import com.revature.services.ProductService;
 
 @RestController
 @RequestMapping("/api/product")
-@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:3000", "http://propanegaming.s3-website.us-east-2.amazonaws.com" }, allowCredentials = "true")
+@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:3000",
+		"http://propanegaming.s3-website.us-east-2.amazonaws.com" }, allowCredentials = "true")
 public class ProductController {
 	private final ProductService productService;
 
@@ -108,7 +109,7 @@ public class ProductController {
 	public ResponseEntity<List<Product>> searchByDescription(@PathVariable("query") String query) {
 		List<Product> productList = productService.findByDescription(query);
 		if (productList.isEmpty()) {
-			return ResponseEntity.notFound().build();
+			return ResponseEntity.status(204).build();
 		}
 		return ResponseEntity.ok(productList);
 	}
