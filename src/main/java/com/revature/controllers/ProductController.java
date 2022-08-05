@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.annotations.Authorized;
@@ -23,7 +24,7 @@ import com.revature.services.ProductService;
 
 @RestController
 @RequestMapping("/api/product")
-@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:3000" }, allowCredentials = "true")
+@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:3000", "http://propanegaming.s3-website.us-east-2.amazonaws.com" }, allowCredentials = "true")
 public class ProductController {
 	private final ProductService productService;
 
@@ -94,18 +95,36 @@ public class ProductController {
 		return ResponseEntity.ok(optional.get());
 	}
 
-	@GetMapping("/search/{name}")
-	public ResponseEntity<Set<Product>> getBySimilarName(@PathVariable("name") String name) {
+	@GetMapping("/search/{input}")
+	public ResponseEntity<Set<Product>> getBySimilarNameDescription(@PathVariable("input") String input) {
 
-		return ResponseEntity.ok(productService.findBySimilarName(name));
+		return ResponseEntity.ok(productService.findBySimilarNameDescription(input));
 	}
 
-	@Authorized
 	@GetMapping("/search/description/{query}")
 	public ResponseEntity<List<Product>> searchByDescription(@PathVariable("query") String query) {
 		List<Product> productList = productService.findByDescription(query);
 		if (productList.size() == 0) {
 			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(productList);
+	}
+
+	@GetMapping("search/price")
+	public ResponseEntity<List<Product>> searchByPriceRange(@RequestParam double startPrice,
+			@RequestParam double endPrice) {
+		List<Product> productList = productService.searchByPriceRange(startPrice, endPrice);
+		if (productList.size() == 0) {
+			return ResponseEntity.status(204).build();
+		}
+		return ResponseEntity.ok(productList);
+	}
+
+	@GetMapping("search/tag/{tagName}")
+	public ResponseEntity<List<Product>> searchByTag(@PathVariable("tagName") String tagName) {
+		List<Product> productList = productService.searchByTag(tagName);
+		if (productList.size() == 0) {
+			return ResponseEntity.status(204).build();
 		}
 		return ResponseEntity.ok(productList);
 	}
