@@ -243,4 +243,28 @@ public class ProductServiceTest {
 		List<Product> resultList = productService.saveAll(testList, metaDataList);
 		assertEquals(testList, resultList);
 	}
+
+	@Test
+	void findBySimilarNameDescriptionShouldReturnAnExtraMatch() {
+		Product testProduct = new Product();
+		testProduct.setDescription("A reusable shopping bag");
+		testProduct.setName("Cap");
+
+		Product testHat = new Product();
+		testHat.setDescription("A hat that Bryan wants");
+		testHat.setName("Coat");
+
+		List<Product> testList = new ArrayList<>();
+		testList.add(testHat);
+		testList.add(testProduct);
+
+		when(productRepository.findAll()).thenReturn(testList);
+		when(productRepository.findByDescriptionContainingIgnoreCase("(Cap)")).thenReturn(testList);
+		when(productRepository.findBySimilarName("(Cap)")).thenReturn(testList);
+
+		Set<Product> resultSet = new HashSet<Product>(productService.findBySimilarNameDescription("Cap"));
+
+		assertEquals(2, resultSet.size());
+		assertEquals(true, resultSet.contains(testProduct));
+	}
 }
