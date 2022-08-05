@@ -21,6 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.revature.models.Product;
 import com.revature.repositories.ProductRepository;
 import com.revature.models.Tag;
+import com.revature.dtos.ProductInfo;
 import com.revature.models.ProductTagJunction;
 
 @ExtendWith(MockitoExtension.class)
@@ -219,5 +220,27 @@ public class ProductServiceTest {
 
 		assertEquals(1, resultSet.size());
 		assertEquals(true, resultSet.contains(testProduct));
+	}
+
+	@Test
+	void shouldSaveAll() {
+		Product testBag = new Product();
+		testBag.setDescription("A reusable shopping bag");
+		testBag.setName("Shopping Bag");
+
+		Product testHat = new Product();
+		testHat.setDescription("A hat that Bryan wants");
+		testHat.setName("Fancy Hat");
+
+		List<Product> testList = new ArrayList<>();
+		testList.add(testHat);
+		testList.add(testBag);
+
+		when(productRepository.saveAll(testList)).thenReturn(testList);
+
+		List<ProductInfo> metaDataList = new ArrayList<>();
+
+		List<Product> resultList = productService.saveAll(testList, metaDataList);
+		assertEquals(testList, resultList);
 	}
 }
