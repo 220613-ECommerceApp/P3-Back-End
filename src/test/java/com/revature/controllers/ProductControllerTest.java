@@ -4,8 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -20,6 +23,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.dtos.ProductInfo;
 import com.revature.models.Product;
 
 @SpringBootTest
@@ -152,5 +156,158 @@ class ProductControllerTest {
 
             int status = result.getResponse().getStatus();
             assertEquals(204, status);
+      }
+
+      @Test
+      void shouldReturnBadRequestIfBuyingTooMuch() throws Exception {
+
+            List<ProductInfo> testList = new ArrayList<>();
+            ProductInfo productInfo = new ProductInfo(1, 1000);
+            testList.add(productInfo);
+            String purchaseJSON = mapper.writeValueAsString(testList);
+
+            MvcResult result = mockMvc.perform(patch("/api/product")
+                        .header("authorization", "Bearer " + token)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(purchaseJSON))
+                        .andExpect(status().isBadRequest())
+                        .andReturn();
+
+            int status = result.getResponse().getStatus();
+            assertEquals(400, status);
+      }
+
+      @Test
+      void shouldBeAbleToPurchaseAnItem() throws Exception {
+            List<ProductInfo> testList = new ArrayList<>();
+            ProductInfo productInfo = new ProductInfo(1, 2);
+            testList.add(productInfo);
+            String purchaseJSON = mapper.writeValueAsString(testList);
+
+            MvcResult result = mockMvc.perform(patch("/api/product")
+                        .header("authorization", "Bearer " + token)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(purchaseJSON))
+                        .andExpect(status().isOk())
+                        .andReturn();
+
+            String json = result.getResponse().getContentAsString();
+            List<Product> products = mapper.readValue(json, new TypeReference<List<Product>>() {
+            });
+
+            assertEquals(1, products.size());
+            assertEquals("Headphones", products.get(0).getName());
+            assertEquals(8, products.get(0).getQuantity());
+      }
+
+      @Test
+      void shouldReturnNotFoundIfBuyingNonExistentProduct() throws Exception {
+            List<ProductInfo> testList = new ArrayList<>();
+            ProductInfo productInfo = new ProductInfo(94, 2);
+            testList.add(productInfo);
+            String purchaseJSON = mapper.writeValueAsString(testList);
+
+            MvcResult result = mockMvc.perform(patch("/api/product")
+                        .header("authorization", "Bearer " + token)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(purchaseJSON))
+                        .andExpect(status().isNotFound())
+                        .andReturn();
+
+            int status = result.getResponse().getStatus();
+            assertEquals(404, status);
+      }
+
+      @Test
+      void shouldReturnNotFoundIfDeletingNonExistentProduct() throws Exception {
+            MvcResult result = mockMvc.perform(delete("/api/product/{id}", 400)
+                        .header("authorization", "Bearer " + token))
+                        .andExpect(status().isNotFound())
+                        .andReturn();
+
+            int status = result.getResponse().getStatus();
+            assertEquals(404, status);
+      }
+
+      @Test
+      void shouldDeleteAProduct() throws Exception {
+
+            Product proPain = new Product(13, "Pro-Pain", 69.99, 3, "none",
+                        "Well that figures, those two idiots spelled it wrong. -Hank Rutherford Hill, Assistant manager of Strickland Propane");
+            String proPainJSON = mapper.writeValueAsString(proPain);
+
+            mockMvc.perform(put("/api/product")
+                        .header("authorization", "Bearer " + token)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(proPainJSON))
+                        .andExpect(status().isOk())
+                        .andReturn();
+
+            MvcResult deleteionResult = mockMvc.perform(delete("/api/product/{id}", 6)
+                        .header("authorization", "Bearer " + token))
+                        .andExpect(status().isOk())
+                        .andReturn();
+
+            int status = deleteionResult.getResponse().getStatus();
+            assertEquals(200, status);
+      }
+
+      @Test
+      void searchByPriceRangeReturns204IfNoResults() throws Exception {
+            MvcResult result = mockMvc.perform(get("/api/product/search/price")
+                        .header("authorization", "Bearer " + token)
+                        .param("startPrice", "50 000.00")
+                        .param("endPrice", "100000"))
+                        .andExpect(status().is(204))
+                        .andReturn();
+
+            int status = result.getResponse().getStatus();
+            assertEquals(204, status);
+      }
+
+      @Test
+      void searchByPriceRangeReturnsResult() throws Exception {
+            MvcResult result = mockMvc.perform(get("/api/product/search/price")
+                        .header("authorization", "Bearer " + token)
+                        .param("startPrice", "20.00")
+                        .param("endPrice", "20.00"))
+                        .andExpect(status().isOk())
+                        .andReturn();
+
+            String json = result.getResponse().getContentAsString();
+            List<Product> products = mapper.readValue(json, new TypeReference<List<Product>>() {
+            });
+
+            assertEquals(1, products.size());
+            assertEquals("Headphones", products.get(0).getName());
+      }
+
+      @Test
+      void searchByTagReturns204IfNoResults() throws Exception {
+            MvcResult result = mockMvc.perform(get("/api/product/search/tag/{tagName}", "spider")
+                        .header("authorization", "Bearer " + token))
+                        .andExpect(status().is(204))
+                        .andReturn();
+
+            int status = result.getResponse().getStatus();
+            assertEquals(204, status);
+      }
+
+      @Test
+      void searchByTagReturnsResult() throws Exception {
+            MvcResult result = mockMvc.perform(get("/api/product/search/tag/{tagName}", "bryan")
+                        .header("authorization", "Bearer " + token))
+                        .andExpect(status().isOk())
+                        .andReturn();
+
+            String json = result.getResponse().getContentAsString();
+            List<Product> products = mapper.readValue(json, new TypeReference<List<Product>>() {
+            });
+
+            assertEquals(2, products.size());
       }
 }
