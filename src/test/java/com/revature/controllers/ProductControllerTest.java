@@ -93,5 +93,17 @@ class ProductControllerTest {
             assertEquals(3, product.getQuantity());
       }
 
-      // getBySimilarNameDescription(), searchByDescription()
+      @Test
+      void shouldFindProductWithDescription() throws Exception {
+            MvcResult result = mockMvc.perform(get("/api/product/search/description/{query}", "fancy person")
+                        .header("authorization", "Bearer " + token))
+                        .andExpect(status().isOk())
+                        .andReturn();
+
+            String json = result.getResponse().getContentAsString();
+            List<Product> products = mapper.readValue(json, new TypeReference<List<Product>>() {
+            });
+            assertEquals(1, products.size());
+            assertEquals("Baseball Cap", products.get(0).getName());
+      }
 }
