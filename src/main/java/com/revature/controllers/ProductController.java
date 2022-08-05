@@ -95,10 +95,13 @@ public class ProductController {
 		return ResponseEntity.ok(optional.get());
 	}
 
-	@GetMapping("/search/{input}")
-	public ResponseEntity<Set<Product>> getBySimilarNameDescription(@PathVariable("input") String input) {
-
-		return ResponseEntity.ok(productService.findBySimilarNameDescription(input));
+	@GetMapping("/search/name_description")
+	public ResponseEntity<Set<Product>> getBySimilarNameDescription(@RequestParam("query") String query) {
+		Set<Product> productSet = productService.findBySimilarNameDescription(query);
+		if (productSet.size() == 0) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(productSet);
 	}
 
 	@GetMapping("/search/description/{query}")
