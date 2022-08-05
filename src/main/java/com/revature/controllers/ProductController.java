@@ -100,7 +100,7 @@ public class ProductController {
 	public ResponseEntity<Set<Product>> getBySimilarNameDescription(@RequestParam("query") String query) {
 		Set<Product> productSet = productService.findBySimilarNameDescription(query);
 		if (productSet.isEmpty()) {
-			return ResponseEntity.notFound().build();
+			return ResponseEntity.status(204).build();
 		}
 		return ResponseEntity.ok(productSet);
 	}
