@@ -117,4 +117,40 @@ class ProductControllerTest {
             int status = result.getResponse().getStatus();
             assertEquals(204, status);
       }
+
+      @Test
+      void shouldFindProductWithDescriptionAndName() throws Exception {
+            MvcResult result = mockMvc.perform(get("/api/product/search/name_description")
+                        .header("authorization", "Bearer " + token)
+                        .param("query", "nice Shirt Headphones"))
+                        .andExpect(status().isOk())
+                        .andReturn();
+
+            String json = result.getResponse().getContentAsString();
+            List<Product> products = mapper.readValue(json, new TypeReference<List<Product>>() {
+            });
+
+            Product headphones = products.stream().filter(item -> item.getName().equals("Headphones")).findAny()
+                        .orElse(null);
+            Product teeShirt = products.stream().filter(item -> item.getName().equals("TeeShirt")).findAny()
+                        .orElse(null);
+            Product coat = products.stream().filter(item -> item.getName().equals("Coat")).findAny().orElse(null);
+
+            assertEquals(3, products.size());
+            assertNotNull(headphones);
+            assertNotNull(teeShirt);
+            assertNotNull(coat);
+      }
+
+      @Test
+      void shouldReturnStatus204IfSearchWithDescriptionAndNameFoundNothing() throws Exception {
+            MvcResult result = mockMvc.perform(get("/api/product/search/name_description")
+                        .header("authorization", "Bearer " + token)
+                        .param("query", "Bond. James bond."))
+                        .andExpect(status().is(204))
+                        .andReturn();
+
+            int status = result.getResponse().getStatus();
+            assertEquals(204, status);
+      }
 }
