@@ -21,6 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.revature.models.Product;
 import com.revature.repositories.ProductRepository;
 import com.revature.models.Tag;
+import com.revature.dtos.ProductInfo;
 import com.revature.models.ProductTagJunction;
 
 @ExtendWith(MockitoExtension.class)
@@ -218,6 +219,52 @@ public class ProductServiceTest {
 		Set<Product> resultSet = new HashSet<Product>(productService.findBySimilarNameDescription("A  reusable bag"));
 
 		assertEquals(1, resultSet.size());
+		assertEquals(true, resultSet.contains(testProduct));
+	}
+
+	@Test
+	void shouldSaveAll() {
+		Product testBag = new Product();
+		testBag.setDescription("A reusable shopping bag");
+		testBag.setName("Shopping Bag");
+
+		Product testHat = new Product();
+		testHat.setDescription("A hat that Bryan wants");
+		testHat.setName("Fancy Hat");
+
+		List<Product> testList = new ArrayList<>();
+		testList.add(testHat);
+		testList.add(testBag);
+
+		when(productRepository.saveAll(testList)).thenReturn(testList);
+
+		List<ProductInfo> metaDataList = new ArrayList<>();
+
+		List<Product> resultList = productService.saveAll(testList, metaDataList);
+		assertEquals(testList, resultList);
+	}
+
+	@Test
+	void findBySimilarNameDescriptionShouldReturnAnExtraMatch() {
+		Product testProduct = new Product();
+		testProduct.setDescription("A reusable shopping bag");
+		testProduct.setName("Cap");
+
+		Product testHat = new Product();
+		testHat.setDescription("A hat that Bryan wants");
+		testHat.setName("Coat");
+
+		List<Product> testList = new ArrayList<>();
+		testList.add(testHat);
+		testList.add(testProduct);
+
+		when(productRepository.findAll()).thenReturn(testList);
+		when(productRepository.findByDescriptionContainingIgnoreCase("(Cap)")).thenReturn(testList);
+		when(productRepository.findBySimilarName("(Cap)")).thenReturn(testList);
+
+		Set<Product> resultSet = new HashSet<Product>(productService.findBySimilarNameDescription("Cap"));
+
+		assertEquals(2, resultSet.size());
 		assertEquals(true, resultSet.contains(testProduct));
 	}
 }
