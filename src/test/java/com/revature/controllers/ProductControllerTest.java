@@ -25,7 +25,7 @@ import com.revature.models.Product;
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase
-public class ProductControllerTest {
+class ProductControllerTest {
    @Autowired
    private MockMvc mockMvc;
 
