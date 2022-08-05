@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revature.annotations.Authorized;
 import com.revature.models.User;
 import com.revature.services.UserService;
 
@@ -34,14 +35,26 @@ public class ProfileController {
 	@Autowired
 	private UserService us;
 	
+//	@GetMapping 
+//	public User getUserById(@RequestParam("id") int id) {
+//		return us.getId(id);
+//	}
+//	
 	@GetMapping 
-	public User getUserId(@RequestParam("id") int id) {
-		return us.getId(id);
+	public ResponseEntity<User> getUserById(@RequestParam("id") int id) {
+		if(id <= 0) {
+			return new ResponseEntity<User>(us.getId(id), HttpStatus.BAD_REQUEST);
+		}
+		return ResponseEntity.ok(us.getId(id));
 	}
 	
+
 	@PutMapping
-	public User updateUser(@RequestBody User u) {
-		return us.update(u);
+	public ResponseEntity<User> updateUser(@RequestBody User u) {
+		if (u==null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(us.update(u));
 	}
 	
 }

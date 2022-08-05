@@ -9,6 +9,8 @@ CREATE TABLE products (
 
 CREATE TABLE users (
 	id serial PRIMARY KEY,
+	firstname varchar(30),
+	lastname varchar(30),
 	username varchar(20),
 	password varchar(30),
 	email varchar(30)
