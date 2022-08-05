@@ -2,6 +2,8 @@ package com.revature.services;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import com.revature.repositories.OrderHistoryItemRepository;
@@ -17,5 +19,11 @@ public class OrderHistoryService {
     
     public List<OrderHistoryItem> findByUserId(int id){
         return orderHistoryItemRepository.findByUserId(id);
+    }
+
+    @Transactional
+    public void addToOrderHistory(List<OrderHistoryItem> orderInfoList){
+        for(OrderHistoryItem o : orderInfoList)
+            orderHistoryItemRepository.addToOrderHistory(o.getProduct().getId(), o.getUser().getId(), o.getQuantity());
     }
 }
