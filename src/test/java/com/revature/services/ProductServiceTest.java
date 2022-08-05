@@ -121,8 +121,8 @@ public class ProductServiceTest {
 		pList.add(pDummy);
 		int pDummyId = pList.get(0).getId();
 
-		assertEquals(!pList.isEmpty(), true);
-		assertEquals(pDummyId, 1);
+		assertEquals(true, !pList.isEmpty());
+		assertEquals(1, pDummyId);
 
 		Mockito.doNothing().when(productRepository).deleteById(pDummyId);
 
