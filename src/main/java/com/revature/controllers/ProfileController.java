@@ -41,6 +41,7 @@ public class ProfileController {
 //	}
 //	
 	@GetMapping 
+	@Authorized
 	public ResponseEntity<User> getUserById(@RequestParam("id") int id) {
 		if(id <= 0) {
 			return new ResponseEntity<User>(us.getId(id), HttpStatus.BAD_REQUEST);
@@ -50,6 +51,7 @@ public class ProfileController {
 	
 
 	@PutMapping
+	@Authorized
 	public ResponseEntity<User> updateUser(@RequestBody User u) {
 		if (u==null) {
 			return ResponseEntity.notFound().build();
