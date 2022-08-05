@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,6 +31,20 @@ public class WishListItemController {
     public ResponseEntity<Optional<WishListItem>> getWishList(@RequestHeader("Authorization") String authToken) {
         int id = JWTUtil.verifyUserToken(authToken);
         return ResponseEntity.ok(wishListItemService.findWishListById(id));
+    }
+
+    // @Authorized
+    // @PutMapping("/wishlist")
+    // public ResponseEntity<WishListItem> addItemToWishList(@RequestHeader("Authorization") String authToken, Product product, User user, int quantity) {
+    //     int id = JWTUtil.verifyUserToken(authToken);
+    //     return ResponseEntity.ok(wishListItemService.addToWishList(product, user, quantity));
+    // }
+
+    @Authorized
+    @PutMapping("/wishlist")
+    public ResponseEntity<Boolean> removeWishListItem(@RequestHeader("Authorization") String authToken, Integer wishListId) {
+        int id = JWTUtil.verifyUserToken(authToken);
+        return ResponseEntity.ok(wishListItemService.removeWishListItem(wishListId));
     }
 
 }

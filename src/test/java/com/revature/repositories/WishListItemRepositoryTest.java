@@ -2,6 +2,9 @@ package com.revature.repositories;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -32,7 +35,24 @@ public class WishListItemRepositoryTest {
 
     @Test
     void testDeleteProductFromWishList() {
+        // Given
+        Product dP = new Product(6, "Ball", 5.79, 23, "", "This ball is for sale!");
+        User dU  = new User(2, "billy", "billypass", "billy@me.com");
+        WishListItem wLi = new WishListItem(1, 23, dP, dU);
+        // List<WishListItem> wishList = new ArrayList<>(wLi);
         
+
+        // When
+        pR.save(dP);
+        uR.save(dU);
+        underTest.save(wLi);
+
+        // Then
+        int wId = wLi.getId();
+        int pId = dP.getId();
+        int uId = dU.getId();
+        underTest.deleteProductFromWishList(wId, pId, uId);
+        assertThat(wLi).isNull();
     }
 
     @Test
@@ -63,13 +83,14 @@ public class WishListItemRepositoryTest {
             });
     }
 
+
     // @Test
     // void testGetById() {
 
     // }
 
-    @Test
-    void testUpdateQuantityInWishList() {
+    // @Test
+    // void testUpdateQuantityInWishList() {
 
-    }
+    // }
 }
