@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 
 
 @Entity
-@Table(name = "tags")
+// @Table(name = "tags")
 
 @Data // generate getters/setter, toString, hashCode, and equals methods automatically
 @NoArgsConstructor
