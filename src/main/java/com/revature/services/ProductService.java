@@ -68,21 +68,6 @@ public class ProductService {
                if (j == 0) {
                   dist[i][j] = i;
 
-<<<<<<< HEAD
-					} else if (i > 0 && j > 0) {
-						dist[i][j] = Math.min(Math.min(
-								dist[i - 1][j - 1] + ((p.getName().charAt(i - 1) == input.charAt(j - 1)) ? 0 : 1),
-								dist[i - 1][j] + 1), dist[i][j - 1] + 1);
-					}
-				}
-			}
-			if (dist[p.getName().length() - 1][input.length() - 1] <= p.getName().length() / 2) {
-				filteredNames.add(p);
-			}
-		}
-		return filteredNames;
-	}
-=======
                } else if (i > 0 && j > 0) {
                   dist[i][j] = Math.min(Math.min(
                         dist[i - 1][j - 1] + ((p.getName().charAt(i - 1) == input.charAt(j - 1)) ? 0 : 1),
@@ -96,5 +81,4 @@ public class ProductService {
       }
       return filteredNames;
    }
->>>>>>> 246dff07e7f8e8b0ecf0a0f82bfccb798439302a
 }
