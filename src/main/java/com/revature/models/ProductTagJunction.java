@@ -22,13 +22,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductTagJunction {
-	
 
     @Id
 	@Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    
+
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "product_id", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
@@ -38,5 +37,11 @@ public class ProductTagJunction {
 	@JoinColumn(name = "tag_name", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Tag tag;
+	
+	public ProductTagJunction(Product product, Tag tag) {
+		super();
+		this.product = product;
+		this.tag = tag;
+	}
 	
 }
