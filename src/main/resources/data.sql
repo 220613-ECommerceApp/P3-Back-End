@@ -9,6 +9,8 @@ CREATE TABLE products (
 
 CREATE TABLE users (
 	id serial PRIMARY KEY,
+	firstname varchar(30),
+	lastname varchar(30),
 	username varchar(20),
 	password varchar(30),
 	email varchar(30)
@@ -86,11 +88,13 @@ INSERT INTO products (id, quantity, price, description, image_url, name) VALUES 
     'Coat'
 );
 
-INSERT INTO users (id, email, password, username) VALUES (
+INSERT INTO users (id, email, password, username, firstname, lastname) VALUES (
     1,
     'testuser@gmail.com',
     'pass',
-    'test'
+    'test',
+    'nef',
+    'bro'
 );
 
 INSERT INTO orderhistory_item (product_id, user_id, quantity, purchase_time) VALUES (
