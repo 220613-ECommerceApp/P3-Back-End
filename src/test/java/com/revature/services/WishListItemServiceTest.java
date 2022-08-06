@@ -36,7 +36,7 @@ public class WishListItemServiceTest {
     @BeforeEach
     private void setup() {
     
-        User dummyUser = new User(0, "billy123", "billypass", "billy@me.com");
+        User dummyUser = new User("billy123", "billypass", "billy@me.com");
         Product dummyProduct = new Product(1, "Pro-Pain", 29.85, 3, "", "Propane Game of the Year");
         WishListItem dummyWli = new WishListItem(1, 23, dummyProduct, dummyUser);
         List<WishListItem> dummyWishList = new LinkedList<>();

@@ -13,7 +13,7 @@ CREATE TABLE users (
 	lastname varchar(30),
 	username varchar(20),
 	password varchar(30),
-	email varchar(30)
+	email varchar(30) UNIQUE
 );
 
 CREATE TABLE cart_item (

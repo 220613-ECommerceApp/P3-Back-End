@@ -37,7 +37,7 @@ public class WishListItemRepositoryTest {
     void testDeleteProductFromWishList() {
         // Given
         Product dP = new Product(6, "Ball", 5.79, 23, "", "This ball is for sale!");
-        User dU  = new User(2, "billy", "billypass", "billy@me.com");
+        User dU  = new User(2, "billy", "billypass", "billy@me.com", null, null);
         WishListItem wLi = new WishListItem(1, 23, dP, dU);
         // List<WishListItem> wishList = new ArrayList<>(wLi);
         
@@ -59,7 +59,7 @@ public class WishListItemRepositoryTest {
     void testFindByUserId() {
         // Given
         Product dP = new Product(6, "Ball", 5.79, 23, "", "This ball is for sale!");
-        User dU  = new User(2, "billy", "billypass", "billy@me.com");
+        User dU  = new User(2, "billy", "billypass", "billy@me.com", null, null);
         WishListItem wLi = new WishListItem(1, 23, dP, dU);
 
         // When

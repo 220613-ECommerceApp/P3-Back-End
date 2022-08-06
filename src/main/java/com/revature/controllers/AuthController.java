@@ -39,14 +39,19 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<String> register(@RequestBody RegisterRequest registerRequest) {
         User created = new User( 
         		registerRequest.getFirstname(),
         		registerRequest.getLastname(),
                 registerRequest.getUsername(),
                 registerRequest.getPassword(),
                 registerRequest.getEmail());
+        try {
+            authService.register(created);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Unique Constraint violated, emails must be unique.");
+        }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(created));
     }
 }
