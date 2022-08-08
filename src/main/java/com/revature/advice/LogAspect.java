@@ -53,9 +53,9 @@ public class LogAspect {
       StringJoiner joinerB = new StringJoiner(",");
       argsStr.forEach(item -> joinerB.add(item));
 
-      log.info("Invoking {}.{}({}) with arguments: {}", className, methodName, joiner.toString(), joinerB.toString());
+      log.info("Invoking {}.{}({}) with arguments: {}", className, methodName, joiner, joinerB);
       Object obj = jp.proceed();
-      log.info("{}.{}({}) returned: {}", className, methodName, joinerB.toString(), obj.getClass().getTypeName());
+      log.info("{}.{}({}) returned: {}", className, methodName, joinerB, obj.getClass().getTypeName());
       return obj;
    }
 
