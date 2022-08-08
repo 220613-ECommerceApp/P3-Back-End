@@ -59,7 +59,7 @@ public class WishListItemRepositoryTest {
     void testFindByUserId() {
         // Given
         Product dP = new Product(6, "Ball", 5.79, 23, "", "This ball is for sale!");
-        User dU  = new User(2, "billy", "billypass", "billy@me.com", null, null);
+        User dU  = new User(2, "bill", "E", "billy", "billypass", "billy@me.com");
         WishListItem wLi = new WishListItem(1, 23, dP, dU);
 
         // When
@@ -78,11 +78,8 @@ public class WishListItemRepositoryTest {
                 assertThat(w.getQuantity()).isEqualTo(23);
                 assertThat(w.getProduct()).isEqualTo(dP);
                 assertThat(w.getUser()).isEqualTo(dU);
-                assertThat(w).isSameAs(wLi);
-                assertThat(w).isSameAs(wLi);
             });
     }
-
 
     // @Test
     // void testGetById() {
