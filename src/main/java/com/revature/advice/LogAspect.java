@@ -18,13 +18,11 @@ import org.springframework.stereotype.Component;
 public class LogAspect {
    private final Logger log = LoggerFactory.getLogger(LogAspect.class);
 
-   public LogAspect() {
-   }
-
    // execution(access_specifier package_name class_name
    // method_name(argument_list))
    @Pointcut("execution(* com.revature.services.*.*(..))")
    private void servicePointcut() {
+      // empty because @Pointcut annotation defines it
    }
 
    @Around("servicePointcut()")
@@ -55,10 +53,9 @@ public class LogAspect {
       StringJoiner joinerB = new StringJoiner(",");
       argsStr.forEach(item -> joinerB.add(item));
 
-      log.info("Invoking " + className + "." + methodName + "(" + joiner.toString() + ") with arguments: "
-            + joinerB.toString());
+      log.info("Invoking {}.{}({}) with arguments: {}", className, methodName, joiner.toString(), joinerB.toString());
       Object obj = jp.proceed();
-      log.info(className + "." + methodName + "(" + joinerB.toString() + ") returned: " + obj.getClass().getTypeName());
+      log.info("{}.{}({}) returned: {}", className, methodName, joinerB.toString(), obj.getClass().getTypeName());
       return obj;
    }
 
