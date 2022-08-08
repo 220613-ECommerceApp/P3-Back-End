@@ -105,6 +105,18 @@ public class ProductController {
 		return ResponseEntity.ok(productSet);
 	}
 
+	@GetMapping("/search/superSearch")
+	public ResponseEntity<Set<Product>> superSearch(@RequestParam(defaultValue = "0") double startPrice,
+			@RequestParam(defaultValue = "1000000") double endPrice,
+			@RequestParam(defaultValue = "NULL") String tagName,
+			@RequestParam String query) {
+		Set<Product> productSet = productService.superSearch(startPrice, endPrice, tagName, query);
+		if (productSet.isEmpty()) {
+			return ResponseEntity.status(204).build();
+		}
+		return ResponseEntity.ok(productSet);
+	}
+
 	@GetMapping("/search/description/{query}")
 	public ResponseEntity<List<Product>> searchByDescription(@PathVariable("query") String query) {
 		List<Product> productList = productService.findByDescription(query);

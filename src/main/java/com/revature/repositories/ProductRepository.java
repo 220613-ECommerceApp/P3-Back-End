@@ -12,10 +12,10 @@ import com.revature.models.Product;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
-      @Query(value = "select * from products where lower(name) ~* :pattern", nativeQuery = true)
+      @Query(value = "SELECT * FROM products WHERE lower(name) ~* :pattern", nativeQuery = true)
       public List<Product> findBySimilarName(@Param("pattern") String pattern);
 
-      @Query(value = "select * from products where lower(description) ~* :description", nativeQuery = true)
+      @Query(value = "SELECT * FROM products WHERE lower(description) ~* :description", nativeQuery = true)
       public List<Product> findByDescriptionContainingIgnoreCase(
                   @Param("description") String description);
 
@@ -25,4 +25,14 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
       @Query(value = "SELECT * FROM products WHERE id IN "
                   + "(SELECT product_id FROM tag_junction WHERE tag_name = :tagName)", nativeQuery = true)
       public List<Product> tagSearch(@Param("tagName") String tagName);
+
+      @Query(value = "SELECT * FROM products WHERE (price BETWEEN :startPrice AND :endPrice) AND ((lower(name) ~* :pattern) OR (lower(description) ~* :pattern))", nativeQuery = true)
+      public List<Product> superSearchWithoutTag(@Param("startPrice") double startPrice,
+                  @Param("endPrice") double endPrice,
+                  @Param("pattern") String pattern);
+
+      @Query(value = "SELECT * FROM products WHERE (price BETWEEN :startPrice AND :endPrice) AND (id IN (SELECT product_id FROM tag_junction WHERE tag_name = :tagName)) AND ((lower(name) ~* :pattern) OR (lower(description) ~* :pattern))", nativeQuery = true)
+      public List<Product> superSearchWithTag(@Param("startPrice") double startPrice,
+                  @Param("endPrice") double endPrice,
+                  @Param("tagName") String tagName, @Param("pattern") String pattern);
 }
