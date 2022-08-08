@@ -21,13 +21,16 @@ public class ProductService {
 
 	@Autowired
 	private final ProductRepository productRepository;
+	
+	final String REGEX_PUNCT = "\\p{Punct}";
+	
+	
 
 	public ProductService(ProductRepository productRepository) {
 		this.productRepository = productRepository;
 	}
 
 	public List<Product> findByDescription(String description) {
-		final String REGEX_PUNCT = "\\p{Punct}";
 
 		String searchQuery = Arrays.stream(description.split(" ")).map(String::trim)
 				.map(word -> word = word.replaceAll("REGEX_PUNCT", ""))
@@ -82,7 +85,6 @@ public class ProductService {
 	}
 
 	public Set<Product> findBySimilarNameDescription(String input) {
-		final String REGEX_PUNCT = "\\p{Punct}";
 
 		String searchQuery = Arrays.stream(input.split(" ")).map(String::trim)
 				.map(word -> word = word.replaceAll(REGEX_PUNCT, ""))
@@ -108,7 +110,6 @@ public class ProductService {
 	}
 
 	public Set<Product> superSearch(double startPrice, double endPrice, String tagName, String input) {
-		final String REGEX_PUNCT = "\\p{Punct}";
 
 		String searchQuery = Arrays.stream(input.split(" ")).map(String::trim)
 				.map(word -> word = word.replaceAll(REGEX_PUNCT, ""))
