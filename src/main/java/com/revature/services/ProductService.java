@@ -29,7 +29,7 @@ public class ProductService {
 	public List<Product> findByDescription(String description) {
 		String searchQuery = Arrays.stream(description.split(" "))
 				.map(String::trim)
-				.map(word -> word.replaceAll("\\p{Punct}", ""))
+				.map(word -> word = word.replaceAll("\\p{Punct}", ""))
 				.filter(word -> !word.isEmpty() && word.length()>1 && StopWords.contains(word) == false)
 				.collect(Collectors.joining("|", "(", ")"));
 		return productRepository.findByDescriptionContainingIgnoreCase(searchQuery);
@@ -84,7 +84,7 @@ public class ProductService {
 		
 		String searchQuery = Arrays.stream(input.split(" "))
 				.map(String::trim)
-				.map(word -> word.replaceAll("\\p{Punct}", ""))
+				.map(word -> word =  word.replaceAll("\\p{Punct}", ""))
 				.filter(word -> !word.isEmpty() && word.length()>1 && StopWords.contains(word) == false)
 				.collect(Collectors.joining("|", "(", ")"));
 
@@ -110,7 +110,7 @@ public class ProductService {
 
 		String searchQuery = Arrays.stream(input.split(" "))
 				.map(String::trim)
-				.map(word -> word.replaceAll("\\p{Punct}", ""))
+				.map(word -> word = word.replaceAll("\\p{Punct}", ""))
 				.filter(word -> !word.isEmpty() && word.length()>1 && StopWords.contains(word) == false)
 				.collect(Collectors.joining("|", "(", ")"));
 

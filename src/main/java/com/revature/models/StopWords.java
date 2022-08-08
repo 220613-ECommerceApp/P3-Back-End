@@ -139,7 +139,7 @@ public enum StopWords {
 	public static boolean contains(String value) {
 		
 		try {
-			if(StopWords.valueOf(value.toUpperCase()).toString() == value.toUpperCase()) {
+			if(StopWords.valueOf(value.toUpperCase()).toString().equals(value.toUpperCase())) {
 				return true;
 			}
 			
