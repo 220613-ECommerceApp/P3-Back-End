@@ -267,4 +267,22 @@ public class ProductServiceTest {
 		assertEquals(2, resultSet.size());
 		assertEquals(true, resultSet.contains(testProduct));
 	}
+
+	@Test
+	void superSearchShouldReturnAMatchIfInputExtraSpacesTest() {
+		Product testProduct = new Product();
+		testProduct.setDescription("A reusable shopping bag");
+		testProduct.setName("Shopping Bag");
+
+		List<Product> testList = new ArrayList<>();
+		testList.add(testProduct);
+
+		when(productRepository.findAll()).thenReturn(testList);
+		when(productRepository.superSearchWithoutTag(0.0, 100, "(A|reusable|bag)")).thenReturn(testList);
+
+		Set<Product> resultSet = new HashSet<Product>(productService.superSearch(0.0, 100, "NULL", "A  reusable bag"));
+
+		assertEquals(1, resultSet.size());
+		assertEquals(true, resultSet.contains(testProduct));
+	}
 }

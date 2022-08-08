@@ -16,15 +16,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Entity
-@Table(name = "tags")
-
 @Data // generate getters/setter, toString, hashCode, and equals methods automatically
 @NoArgsConstructor
 @AllArgsConstructor
 public class Tag {
-	
+
 	@Id
 	@Column(name = "name")
 	private String name;

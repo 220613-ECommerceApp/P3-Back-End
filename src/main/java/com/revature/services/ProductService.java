@@ -53,19 +53,7 @@ public class ProductService {
 		productRepository.deleteById(id);
 	}
 
-	public Set<Product> findBySimilarNameDescription(String input) {
-		String searchQuery = Arrays.stream(input.split(" "))
-				.map(String::trim)
-				.filter(word -> !word.isEmpty())
-				.collect(Collectors.joining("|", "(", ")"));
-
-		List<Product> allProd = new ArrayList<Product>(productRepository.findAll());
-
-		Set<Product> filteredProds = new HashSet<Product>();
-
-		filteredProds.addAll(productRepository.findBySimilarName(searchQuery));
-		filteredProds.addAll(productRepository.findByDescriptionContainingIgnoreCase(searchQuery));
-
+	private Set<Product> editDistanceSearch(List<Product> allProd, Set<Product> filteredProds, String input) {
 		for (Product p : allProd) {
 			String pName = p.getName();
 			int[][] dist = new int[pName.length()][input.length()];
@@ -86,7 +74,22 @@ public class ProductService {
 			}
 		}
 		return filteredProds;
+	}
 
+	public Set<Product> findBySimilarNameDescription(String input) {
+		String searchQuery = Arrays.stream(input.split(" "))
+				.map(String::trim)
+				.filter(word -> !word.isEmpty())
+				.collect(Collectors.joining("|", "(", ")"));
+
+		List<Product> allProd = new ArrayList<Product>(productRepository.findAll());
+
+		Set<Product> filteredProds = new HashSet<Product>();
+
+		filteredProds.addAll(productRepository.findBySimilarName(searchQuery));
+		filteredProds.addAll(productRepository.findByDescriptionContainingIgnoreCase(searchQuery));
+
+		return editDistanceSearch(allProd, filteredProds, input);
 	}
 
 	public List<Product> searchByPriceRange(double startPrice, double endPrice) {
@@ -95,5 +98,25 @@ public class ProductService {
 
 	public List<Product> searchByTag(String tagName) {
 		return productRepository.tagSearch(tagName);
+	}
+
+	public Set<Product> superSearch(double startPrice, double endPrice, String tagName, String input) {
+
+		String searchQuery = Arrays.stream(input.split(" "))
+				.map(String::trim)
+				.filter(word -> !word.isEmpty())
+				.collect(Collectors.joining("|", "(", ")"));
+
+		Set<Product> filteredProds = new HashSet<>();
+
+		List<Product> allProd = new ArrayList<Product>(productRepository.findAll());
+
+		if (tagName.equals("NULL")) {
+			filteredProds.addAll(productRepository.superSearchWithoutTag(startPrice, endPrice, searchQuery));
+		} else {
+			filteredProds.addAll(productRepository.superSearchWithTag(startPrice, endPrice, tagName, searchQuery));
+		}
+
+		return editDistanceSearch(allProd, filteredProds, input);
 	}
 }

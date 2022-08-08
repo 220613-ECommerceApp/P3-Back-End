@@ -1,6 +1,7 @@
 package com.revature.controllers;
 
 import com.revature.annotations.Authorized;
+import com.revature.dtos.OrderInfo;
 import com.revature.dtos.ProductInfo;
 import com.revature.models.OrderHistoryItem;
 import com.revature.models.Product;
@@ -33,7 +34,7 @@ public class OrderHistoryController {
 
     @Authorized
     @GetMapping("/orderHistory")
-    public ResponseEntity<List<OrderHistoryItem>> getOrderHistory(@RequestHeader("Authorization") String authToken) {
+    public ResponseEntity<List<List<OrderInfo>>> getOrderHistory(@RequestHeader("Authorization") String authToken) {
         int id = JWTUtil.verifyUserToken(authToken);
         return ResponseEntity.ok(orderHistoryService.findByUserId(id));
     }
