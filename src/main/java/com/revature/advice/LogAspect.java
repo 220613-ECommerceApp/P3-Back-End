@@ -47,15 +47,15 @@ public class LogAspect {
          argsStr.add("" + args[i]);
       }
 
-      StringJoiner joiner = new StringJoiner(",");
-      paramStr.forEach(item -> joiner.add(item));
+      StringJoiner parameterJoiner = new StringJoiner(",");
+      paramStr.forEach(item -> parameterJoiner.add(item));
 
-      StringJoiner joinerB = new StringJoiner(",");
-      argsStr.forEach(item -> joinerB.add(item));
+      StringJoiner argumentJoiner = new StringJoiner(",");
+      argsStr.forEach(item -> argumentJoiner.add(item));
 
-      log.info("Invoking {}.{}({}) with arguments: {}", className, methodName, joiner, joinerB);
+      log.info("Invoking {}.{}({}) with arguments: {}", className, methodName, parameterJoiner, argumentJoiner);
       Object obj = jp.proceed();
-      log.info("{}.{}({}) returned: {}", className, methodName, joinerB, obj.getClass().getTypeName());
+      log.info("{}.{}({}) returned: {}", className, methodName, argumentJoiner, obj.getClass().getTypeName());
       return obj;
    }
 
