@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.revature.repositories.OrderHistoryItemRepository;
 import com.revature.dtos.OrderInfo;
-import com.revature.dtos.ProductInfo;
 import com.revature.models.OrderHistoryItem;
 
 @Service
