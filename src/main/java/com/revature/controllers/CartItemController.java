@@ -41,7 +41,7 @@ public class CartItemController {
 
 	// All counts of a single item
 	@Authorized
-	@PostMapping("/removefromcart/{productid}")
+	@DeleteMapping("/removefromcart/{productid}")
 	public ResponseEntity<CartItem> removeFromCart(@PathVariable("productid") int productid,
 			@RequestHeader("Authorization") String token) {
 		int userid = JWTUtil.verifyUserToken(token);
