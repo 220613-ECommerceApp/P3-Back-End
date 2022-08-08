@@ -30,7 +30,7 @@ public class ProductService {
 		String searchQuery = Arrays.stream(description.split(" "))
 				.map(String::trim)
 				.map(word -> word = word.replaceAll("\\p{Punct}", ""))
-				.filter(word -> !word.isEmpty() && word.length()>1 && StopWords.contains(word) == false)
+				.filter(word -> !word.isEmpty() && word.length()>1 && !StopWords.contains(word))
 				.collect(Collectors.joining("|", "(", ")"));
 		return productRepository.findByDescriptionContainingIgnoreCase(searchQuery);
 	}
@@ -85,7 +85,7 @@ public class ProductService {
 		String searchQuery = Arrays.stream(input.split(" "))
 				.map(String::trim)
 				.map(word -> word =  word.replaceAll("\\p{Punct}", ""))
-				.filter(word -> !word.isEmpty() && word.length()>1 && StopWords.contains(word) == false)
+				.filter(word -> !word.isEmpty() && word.length()>1 && !StopWords.contains(word))
 				.collect(Collectors.joining("|", "(", ")"));
 
 		List<Product> allProd = new ArrayList<Product>(productRepository.findAll());
@@ -111,7 +111,7 @@ public class ProductService {
 		String searchQuery = Arrays.stream(input.split(" "))
 				.map(String::trim)
 				.map(word -> word = word.replaceAll("\\p{Punct}", ""))
-				.filter(word -> !word.isEmpty() && word.length()>1 && StopWords.contains(word) == false)
+				.filter(word -> !word.isEmpty() && word.length()>1 && !StopWords.contains(word))
 				.collect(Collectors.joining("|", "(", ")"));
 
 		Set<Product> filteredProds = new HashSet<>();
