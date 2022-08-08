@@ -27,11 +27,13 @@ public class ProductService {
 	}
 
 	public List<Product> findByDescription(String description) {
-		String searchQuery = Arrays.stream(description.split(" "))
-				.map(String::trim)
-				.map(word -> word = word.replaceAll("\\p{Punct}", ""))
-				.filter(word -> !word.isEmpty() && word.length()>1 && !StopWords.contains(word))
+		final String REGEX_PUNCT = "\\p{Punct}";
+
+		String searchQuery = Arrays.stream(description.split(" ")).map(String::trim)
+				.map(word -> word = word.replaceAll("REGEX_PUNCT", ""))
+				.filter(word -> !word.isEmpty() && word.length() > 1 && !StopWords.contains(word))
 				.collect(Collectors.joining("|", "(", ")"));
+		
 		return productRepository.findByDescriptionContainingIgnoreCase(searchQuery);
 	}
 
@@ -80,12 +82,11 @@ public class ProductService {
 	}
 
 	public Set<Product> findBySimilarNameDescription(String input) {
-		
-		
-		String searchQuery = Arrays.stream(input.split(" "))
-				.map(String::trim)
-				.map(word -> word =  word.replaceAll("\\p{Punct}", ""))
-				.filter(word -> !word.isEmpty() && word.length()>1 && !StopWords.contains(word))
+		final String REGEX_PUNCT = "\\p{Punct}";
+
+		String searchQuery = Arrays.stream(input.split(" ")).map(String::trim)
+				.map(word -> word = word.replaceAll(REGEX_PUNCT, ""))
+				.filter(word -> !word.isEmpty() && word.length() > 1 && !StopWords.contains(word))
 				.collect(Collectors.joining("|", "(", ")"));
 
 		List<Product> allProd = new ArrayList<Product>(productRepository.findAll());
@@ -107,11 +108,11 @@ public class ProductService {
 	}
 
 	public Set<Product> superSearch(double startPrice, double endPrice, String tagName, String input) {
+		final String REGEX_PUNCT = "\\p{Punct}";
 
-		String searchQuery = Arrays.stream(input.split(" "))
-				.map(String::trim)
-				.map(word -> word = word.replaceAll("\\p{Punct}", ""))
-				.filter(word -> !word.isEmpty() && word.length()>1 && !StopWords.contains(word))
+		String searchQuery = Arrays.stream(input.split(" ")).map(String::trim)
+				.map(word -> word = word.replaceAll(REGEX_PUNCT, ""))
+				.filter(word -> !word.isEmpty() && word.length() > 1 && !StopWords.contains(word))
 				.collect(Collectors.joining("|", "(", ")"));
 
 		Set<Product> filteredProds = new HashSet<>();
