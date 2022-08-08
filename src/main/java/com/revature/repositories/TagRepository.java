@@ -15,5 +15,5 @@ public interface TagRepository extends JpaRepository<Tag, String> {
 
       @Query(value = "SELECT * FROM products WHERE id IN "
                   + "(SELECT product_id FROM tag_junction WHERE tag_name = :tagName)", nativeQuery = true)
-      public List<Product> tagSearch(@Param("tagName") String tagName);
+      // public List<Product> tagSearch(@Param("tagName") String tagName);
 }

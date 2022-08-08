@@ -28,7 +28,7 @@ public class TagService {
 		return tagRepository.findAll();
 	}
 
-    public List<Tag> tagSearch(String tagName) {
-        return tagRepository.tagSearch(tagName);
+    // public List<Tag> tagSearch(String tagName) {
+    //     return tagRepository.tagSearch(tagName);
     }
 }
