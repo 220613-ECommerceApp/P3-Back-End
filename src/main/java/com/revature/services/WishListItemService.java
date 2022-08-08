@@ -42,6 +42,10 @@ public class WishListItemService {
         return wishListItemRepository.findById(id);
     }
 
+    public Optional<WishListItem> findWishListByUserId(User user){
+        return wishListItemRepository.findByUserId(user.getId());
+    }
+
     public boolean removeWishListItem(Integer wishListId){
         wishListItemRepository.deleteById(wishListId);
         return true;
