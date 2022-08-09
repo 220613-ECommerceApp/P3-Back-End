@@ -60,8 +60,11 @@ public class UserServiceTest {
    @Test
    public void updateUserTest() {
 	   User user = new User("Neffy", "Ros", "Username", "pass", "nef@gmail.com");
-	   User userUpdated = new User ("Ros", "Neffy", "Username", "pass", "neffy@gmail.com");
-	   when (mockedUserRepository.save(user)).thenReturn(user);
+	   User userUpdated = new User ("Ros", "Neffy", "UpdatedUsername", "pass", "neffy@gmail.com");
+	   when (mockedUserRepository.save(user)).thenReturn(userUpdated);
+	   
+	   User expected = mockedUserService.update(user);
+	   assertEquals(expected, userUpdated);
    }
 
 
