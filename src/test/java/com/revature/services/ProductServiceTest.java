@@ -53,7 +53,7 @@ public class ProductServiceTest {
 
 	@Test
 	void findByDescriptionContainingShouldReturnEmtpyIfNoMatch() {
-		when(productRepository.findByDescriptionContainingIgnoreCase("(GTA|5)"))
+		when(productRepository.findByDescriptionContainingIgnoreCase("(GTA)"))
 				.thenReturn(Collections.<Product>emptyList());
 		List<Product> resultList = productService.findByDescription("GTA 5");
 		assertEquals(0, resultList.size());
@@ -110,7 +110,7 @@ public class ProductServiceTest {
 
 		List<Product> testList = new ArrayList<>();
 		testList.add(testProduct);
-		when(productRepository.findByDescriptionContainingIgnoreCase("(A|reusable|bag)")).thenReturn(testList);
+		when(productRepository.findByDescriptionContainingIgnoreCase("(reusable|bag)")).thenReturn(testList);
 
 		List<Product> resultList = productService.findByDescription("A  reusable bag");
 
@@ -198,7 +198,7 @@ public class ProductServiceTest {
 
 	@Test
 	void findBySimilarNameDescriptionShouldReturnEmtpyIfNoMatchTest() {
-		when(productRepository.findBySimilarName("(GTA|5)")).thenReturn(Collections.<Product>emptyList());
+		when(productRepository.findBySimilarName("(GTA)")).thenReturn(Collections.<Product>emptyList());
 		Set<Product> resultList = new HashSet<Product>(productService.findBySimilarNameDescription("GTA 5"));
 		assertEquals(0, resultList.size());
 	}
@@ -213,8 +213,8 @@ public class ProductServiceTest {
 		testList.add(testProduct);
 
 		when(productRepository.findAll()).thenReturn(testList);
-		when(productRepository.findByDescriptionContainingIgnoreCase("(A|reusable|bag)")).thenReturn(testList);
-		when(productRepository.findBySimilarName("(A|reusable|bag)")).thenReturn(testList);
+		when(productRepository.findByDescriptionContainingIgnoreCase("(reusable|bag)")).thenReturn(testList);
+		when(productRepository.findBySimilarName("(reusable|bag)")).thenReturn(testList);
 
 		Set<Product> resultSet = new HashSet<Product>(productService.findBySimilarNameDescription("A  reusable bag"));
 
@@ -265,6 +265,24 @@ public class ProductServiceTest {
 		Set<Product> resultSet = new HashSet<Product>(productService.findBySimilarNameDescription("Cap"));
 
 		assertEquals(2, resultSet.size());
+		assertEquals(true, resultSet.contains(testProduct));
+	}
+
+	@Test
+	void superSearchShouldReturnAMatchIfInputExtraSpacesTest() {
+		Product testProduct = new Product();
+		testProduct.setDescription("A reusable shopping bag");
+		testProduct.setName("Shopping Bag");
+
+		List<Product> testList = new ArrayList<>();
+		testList.add(testProduct);
+
+		when(productRepository.findAll()).thenReturn(testList);
+		when(productRepository.superSearchWithoutTag(0.0, 100, "(reusable|bag)")).thenReturn(testList);
+
+		Set<Product> resultSet = new HashSet<Product>(productService.superSearch(0.0, 100, "NULL", "A  reusable bag"));
+
+		assertEquals(1, resultSet.size());
 		assertEquals(true, resultSet.contains(testProduct));
 	}
 }
