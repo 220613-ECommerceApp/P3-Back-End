@@ -1,6 +1,10 @@
 package com.revature.services;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,15 +18,11 @@ import com.revature.repositories.WishListItemRepository;
 @Service
 public class WishListItemService {
 
-    @Autowired
     private final WishListItemRepository wishListItemRepository;
 
-    @Autowired
-    private final UserRepository userRepository;
     
-    public WishListItemService(WishListItemRepository wishListItemRepository, UserRepository userRepository){
+    public WishListItemService(WishListItemRepository wishListItemRepository){
         this.wishListItemRepository = wishListItemRepository;
-        this.userRepository = userRepository;
     }
 
     public WishListItem createWishList(Product product, User user){
@@ -31,27 +31,18 @@ public class WishListItemService {
         return wishListItemRepository.save(wLi);
     }
 
-    public WishListItem addToWishList(Product product, User user, int quantity){
-        WishListItem wLi = wishListItemRepository.getById(user.getId());
-        wLi.setProduct(product);
-        wishListItemRepository.updateQuantityInWishList(quantity, wLi.getId(), product, wLi.getUser());
-        return wLi;
+    @Transactional
+    public void addToWishList(int productId, int userId){
+        wishListItemRepository.addProductToWishlist(productId, userId);
     }
 
-    public Optional<WishListItem> findWishListById(int id){
-        return wishListItemRepository.findById(id);
+    public List<WishListItem> findWishListItemsByUserId(int userId){
+        return wishListItemRepository.findByUserId(userId);
     }
-
-    public boolean removeWishListItem(Integer wishListId){
-        wishListItemRepository.deleteById(wishListId);
-        return true;
-    }
-
-
-    public WishListItem updateItemQuantity(int quantity, int wishListId, Product product, User user){
-        WishListItem wLi = wishListItemRepository.getById(wishListId);
-        wishListItemRepository.updateQuantityInWishList(quantity, wishListId, product, user);
-        return wLi;
+    
+    @Transactional
+    public void removeWishList(int wishListId, int userId){
+        wishListItemRepository.deleteProductFromWishList(wishListId, userId);
     }
 
 }
