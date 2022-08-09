@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.revature.dtos.ProductInfo;
 import com.revature.models.Product;
+import com.revature.models.StopWords;
 import com.revature.repositories.ProductRepository;
 
 @Service
@@ -20,16 +21,22 @@ public class ProductService {
 
 	@Autowired
 	private final ProductRepository productRepository;
+	
+	final String REGEX_PUNCT = "\\p{Punct}";
+	
+	
 
 	public ProductService(ProductRepository productRepository) {
 		this.productRepository = productRepository;
 	}
 
 	public List<Product> findByDescription(String description) {
-		String searchQuery = Arrays.stream(description.split(" "))
-				.map(String::trim)
-				.filter(word -> !word.isEmpty())
+
+		String searchQuery = Arrays.stream(description.split(" ")).map(String::trim)
+				.map(word -> word = word.replaceAll("REGEX_PUNCT", ""))
+				.filter(word -> !word.isEmpty() && word.length() > 1 && !StopWords.contains(word))
 				.collect(Collectors.joining("|", "(", ")"));
+		
 		return productRepository.findByDescriptionContainingIgnoreCase(searchQuery);
 	}
 
@@ -63,13 +70,14 @@ public class ProductService {
 					if (i * j == 0) {
 						dist[i][j] = (i == 0 ? j : i);
 					} else {
-						dist[i][j] = Math.min(Math.min(
-								dist[i - 1][j - 1] + ((pName.charAt(i - 1) == input.charAt(j - 1)) ? 0 : 1),
-								dist[i - 1][j] + 1), dist[i][j - 1] + 1);
+						dist[i][j] = Math.min(
+								Math.min(dist[i - 1][j - 1] + ((pName.charAt(i - 1) == input.charAt(j - 1)) ? 0 : 1),
+										dist[i - 1][j] + 1),
+								dist[i][j - 1] + 1);
 					}
 				}
 			}
-			if (dist[pName.length() - 1][input.length() - 1] <= pName.length() / 2) {
+			if (input.length() != 0 && dist[pName.length() - 1][input.length() - 1] <= pName.length() / 2) {
 				filteredProds.add(p);
 			}
 		}
@@ -77,9 +85,10 @@ public class ProductService {
 	}
 
 	public Set<Product> findBySimilarNameDescription(String input) {
-		String searchQuery = Arrays.stream(input.split(" "))
-				.map(String::trim)
-				.filter(word -> !word.isEmpty())
+
+		String searchQuery = Arrays.stream(input.split(" ")).map(String::trim)
+				.map(word -> word = word.replaceAll(REGEX_PUNCT, ""))
+				.filter(word -> !word.isEmpty() && word.length() > 1 && !StopWords.contains(word))
 				.collect(Collectors.joining("|", "(", ")"));
 
 		List<Product> allProd = new ArrayList<Product>(productRepository.findAll());
@@ -102,9 +111,9 @@ public class ProductService {
 
 	public Set<Product> superSearch(double startPrice, double endPrice, String tagName, String input) {
 
-		String searchQuery = Arrays.stream(input.split(" "))
-				.map(String::trim)
-				.filter(word -> !word.isEmpty())
+		String searchQuery = Arrays.stream(input.split(" ")).map(String::trim)
+				.map(word -> word = word.replaceAll(REGEX_PUNCT, ""))
+				.filter(word -> !word.isEmpty() && word.length() > 1 && !StopWords.contains(word))
 				.collect(Collectors.joining("|", "(", ")"));
 
 		Set<Product> filteredProds = new HashSet<>();

@@ -51,7 +51,7 @@ public class OrderHistoryController {
         return new OrderHistoryItem(
             0, 
             new Product(productInfo.getId(), null, 0, 0, null, null), 
-            new User(userId, null, null, null), 
+            new User(userId, null, null, null, null, null), 
             productInfo.getQuantity(), 
             null);
     }
