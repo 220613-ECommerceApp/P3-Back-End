@@ -34,7 +34,6 @@ public class WishListItemService {
     public WishListItem addToWishList(Product product, User user, int quantity){
         WishListItem wLi = wishListItemRepository.getById(user.getId());
         wLi.setProduct(product);
-        wishListItemRepository.updateQuantityInWishList(quantity, wLi.getId(), product, wLi.getUser());
         return wLi;
     }
 
@@ -45,13 +44,6 @@ public class WishListItemService {
     public boolean removeWishListItem(Integer wishListId){
         wishListItemRepository.deleteById(wishListId);
         return true;
-    }
-
-
-    public WishListItem updateItemQuantity(int quantity, int wishListId, Product product, User user){
-        WishListItem wLi = wishListItemRepository.getById(wishListId);
-        wishListItemRepository.updateQuantityInWishList(quantity, wishListId, product, user);
-        return wLi;
     }
 
 }

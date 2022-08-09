@@ -17,12 +17,7 @@ public interface WishListItemRepository extends JpaRepository<WishListItem, Inte
     // custom query to change quantity of an item inside the wish list
     @Modifying
     @Query
-    (value = "UPDATE wishlist_item w SET w.quantity = ? WHERE w.id = ? AND w.product_id = ? AND w.user_id = ?", nativeQuery = true)
-    void updateQuantityInWishList(Integer quantity, Integer wishListId, Product product, User user);
-
-    @Modifying
-    @Query
-    (value = "DELETE FROM wishlist_item w WHERE w.id = ? AND w.product_id = ? AND w.user_id = ?", nativeQuery = true)
+    (value = "DELETE FROM wishlist_item w WHERE w.id = ?", nativeQuery = true)
     void deleteProductFromWishList(Integer wishListId, Integer product, Integer user);
 
     WishListItem getById(int id);
