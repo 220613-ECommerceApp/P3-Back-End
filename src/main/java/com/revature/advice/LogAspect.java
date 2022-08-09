@@ -55,7 +55,11 @@ public class LogAspect {
 
       log.info("Invoking {}.{}({}) with arguments: {}", className, methodName, parameterJoiner, argumentJoiner);
       Object obj = jp.proceed();
-      log.info("{}.{}({}) returned: {}", className, methodName, argumentJoiner, obj.getClass().getTypeName());
+      if (obj == null) {
+         log.info("{}.{}({}) returned: {}", className, methodName, argumentJoiner, obj);
+      } else {
+         log.info("{}.{}({}) returned: {}", className, methodName, argumentJoiner, obj.getClass().getTypeName());
+      }
       return obj;
    }
 
