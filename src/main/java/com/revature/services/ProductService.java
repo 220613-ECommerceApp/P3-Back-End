@@ -63,10 +63,10 @@ public class ProductService {
 	private Set<Product> editDistanceSearch(List<Product> allProd, Set<Product> filteredProds, String input) {
 		for (Product p : allProd) {
 			String pName = p.getName();
-			int[][] dist = new int[pName.length()][input.length()];
+			int[][] dist = new int[pName.length()+1][input.length()+1];
 
-			for (int i = 0; i < pName.length(); i++) {
-				for (int j = 0; j < input.length(); j++) {
+			for (int i = 0; i < pName.length()+1; i++) {
+				for (int j = 0; j < input.length()+1; j++) {
 					if (i * j == 0) {
 						dist[i][j] = (i == 0 ? j : i);
 					} else {
