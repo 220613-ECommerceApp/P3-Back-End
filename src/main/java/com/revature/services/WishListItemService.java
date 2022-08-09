@@ -39,19 +39,11 @@ public class WishListItemService {
     public List<WishListItem> findWishListItemsByUserId(int userId){
         return wishListItemRepository.findByUserId(userId);
     }
-
     
-    public boolean removeWishListItem(Integer wishListId){
-        wishListItemRepository.deleteById(wishListId);
-        return true;
+    @Transactional
+    public void removeWishList(int wishListId, int userId){
+        wishListItemRepository.deleteProductFromWishList(wishListId, userId);
     }
-    /*
-    
-    public WishListItem updateItemQuantity(int quantity, int wishListId, Product product, User user){
-        WishListItem wLi = wishListItemRepository.getById(wishListId);
-        wishListItemRepository.updateQuantityInWishList(quantity, wishListId, product, user);
-        return wLi;
-    }*/
 
 }
 
