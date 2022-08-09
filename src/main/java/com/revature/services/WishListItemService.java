@@ -1,5 +1,7 @@
 package com.revature.services;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +16,11 @@ import com.revature.repositories.WishListItemRepository;
 @Service
 public class WishListItemService {
 
-    @Autowired
     private final WishListItemRepository wishListItemRepository;
 
-    @Autowired
-    private final UserRepository userRepository;
     
-    public WishListItemService(WishListItemRepository wishListItemRepository, UserRepository userRepository){
+    public WishListItemService(WishListItemRepository wishListItemRepository){
         this.wishListItemRepository = wishListItemRepository;
-        this.userRepository = userRepository;
     }
 
     public WishListItem createWishList(Product product, User user){
@@ -31,32 +29,34 @@ public class WishListItemService {
         return wishListItemRepository.save(wLi);
     }
 
-    public WishListItem addToWishList(Product product, User user, int quantity){
-        WishListItem wLi = wishListItemRepository.getById(user.getId());
-        wLi.setProduct(product);
-        wishListItemRepository.updateQuantityInWishList(quantity, wLi.getId(), product, wLi.getUser());
-        return wLi;
+    public void addToWishList(int productId, int userId){
+        wishListItemRepository.addProductToWishlist(productId, userId);
     }
 
-    public Optional<WishListItem> findWishListById(int id){
-        return wishListItemRepository.findById(id);
+    public List<Product> findWishListItemsByUserId(int userId){
+        return convertWishListItemToProduct(wishListItemRepository.findByUserId(userId));
     }
 
-    public Optional<WishListItem> findWishListByUserId(User user){
-        return wishListItemRepository.findByUserId(user.getId());
-    }
+    private List<Product> convertWishListItemToProduct(List<WishListItem> wishListItems){
+        List<Product> products = new ArrayList<>();
 
+        for(WishListItem w : wishListItems)
+            products.add(w.getProduct());
+
+        return products;
+    }
+    /* 
     public boolean removeWishListItem(Integer wishListId){
         wishListItemRepository.deleteById(wishListId);
         return true;
     }
 
-
+    
     public WishListItem updateItemQuantity(int quantity, int wishListId, Product product, User user){
         WishListItem wLi = wishListItemRepository.getById(wishListId);
         wishListItemRepository.updateQuantityInWishList(quantity, wishListId, product, user);
         return wLi;
-    }
+    }*/
 
 }
 

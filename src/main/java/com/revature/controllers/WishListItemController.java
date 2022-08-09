@@ -1,5 +1,6 @@
 package com.revature.controllers;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
@@ -30,17 +31,17 @@ public class WishListItemController {
     }
 
     @Authorized
-    @GetMapping("/wishlist")
-    public ResponseEntity<Optional<WishListItem>> getWishList(@RequestHeader("Authorization") String authToken) {
+    @GetMapping("/getWishList")
+    public ResponseEntity<List<Product>> getWishList(@RequestHeader("Authorization") String authToken) {
         int id = JWTUtil.verifyUserToken(authToken);
-        return ResponseEntity.ok(wishListItemService.findWishListById(id));
+        return ResponseEntity.ok(wishListItemService.findWishListItemsByUserId(id));
     }
 
     @Authorized
-    @PostMapping("/wishlist")
-    public ResponseEntity<WishListItem> addItemToWishList(@RequestHeader("Authorization") String authToken, Product product, User user, int quantity) {
+    @PostMapping("/addItemToWishList")
+    public ResponseEntity<String> addItemToWishList(@RequestHeader("Authorization") String authToken, int productId) {
         int id = JWTUtil.verifyUserToken(authToken);
-        return ResponseEntity.ok(wishListItemService.addToWishList(product, user, quantity));
+        return ResponseEntity.ok("Added product to order history successfully!");
     }
 
     @Authorized
