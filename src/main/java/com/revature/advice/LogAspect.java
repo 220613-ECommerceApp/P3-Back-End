@@ -35,8 +35,8 @@ public class LogAspect {
       String[] paramNames = cs.getParameterNames();
       Class<?>[] paramTypes = cs.getParameterTypes();
 
-      List<String> paramStr = new ArrayList<String>();
-      List<String> argsStr = new ArrayList<String>();
+      List<String> paramStr = new ArrayList<>();
+      List<String> argsStr = new ArrayList<>();
       Object[] args = jp.getArgs();
 
       for (int i = 0; i < paramTypes.length; i++) {
@@ -48,10 +48,10 @@ public class LogAspect {
       }
 
       StringJoiner parameterJoiner = new StringJoiner(",");
-      paramStr.forEach(item -> parameterJoiner.add(item));
+      paramStr.forEach(parameterJoiner::add);
 
       StringJoiner argumentJoiner = new StringJoiner(",");
-      argsStr.forEach(item -> argumentJoiner.add(item));
+      argsStr.forEach(argumentJoiner::add);
 
       log.info("Invoking {}.{}({}) with arguments: {}", className, methodName, parameterJoiner, argumentJoiner);
       Object obj = jp.proceed();
