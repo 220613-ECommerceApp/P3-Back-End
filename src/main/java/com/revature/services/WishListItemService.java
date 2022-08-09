@@ -33,24 +33,16 @@ public class WishListItemService {
         wishListItemRepository.addProductToWishlist(productId, userId);
     }
 
-    public List<Product> findWishListItemsByUserId(int userId){
-        return convertWishListItemToProduct(wishListItemRepository.findByUserId(userId));
+    public List<WishListItem> findWishListItemsByUserId(int userId){
+        return wishListItemRepository.findByUserId(userId);
     }
 
-    private List<Product> convertWishListItemToProduct(List<WishListItem> wishListItems){
-        List<Product> products = new ArrayList<>();
-
-        for(WishListItem w : wishListItems)
-            products.add(w.getProduct());
-
-        return products;
-    }
-    /* 
+    
     public boolean removeWishListItem(Integer wishListId){
         wishListItemRepository.deleteById(wishListId);
         return true;
     }
-
+    /*
     
     public WishListItem updateItemQuantity(int quantity, int wishListId, Product product, User user){
         WishListItem wLi = wishListItemRepository.getById(wishListId);

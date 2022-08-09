@@ -32,7 +32,7 @@ public class WishListItemController {
 
     @Authorized
     @GetMapping("/getWishList")
-    public ResponseEntity<List<Product>> getWishList(@RequestHeader("Authorization") String authToken) {
+    public ResponseEntity<List<WishListItem>> getWishList(@RequestHeader("Authorization") String authToken) {
         int id = JWTUtil.verifyUserToken(authToken);
         return ResponseEntity.ok(wishListItemService.findWishListItemsByUserId(id));
     }
@@ -44,6 +44,7 @@ public class WishListItemController {
         return ResponseEntity.ok("Added product to order history successfully!");
     }
 
+    
     @Authorized
     @PutMapping("/wishlist")
     public ResponseEntity<Boolean> removeWishListItem(@RequestHeader("Authorization") String authToken, Integer wishListId) {
