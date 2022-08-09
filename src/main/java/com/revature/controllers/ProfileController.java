@@ -23,8 +23,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.annotations.Authorized;
+import com.revature.dtos.OrderInfo;
+import com.revature.models.CartItem;
 import com.revature.models.User;
 import com.revature.services.UserService;
+import com.revature.utils.JWTUtil;
 
 
 @RestController
@@ -40,16 +43,21 @@ public class ProfileController {
 //		return us.getId(id);
 //	}
 //	
-	@GetMapping 
-	@Authorized
-	public ResponseEntity<User> getUserById(@RequestParam("id") int id) {
-		if(id <= 0) {
-			return new ResponseEntity<User>(us.getId(id), HttpStatus.BAD_REQUEST);
-		}
-		return ResponseEntity.ok(us.getId(id));
+//	@GetMapping 
+//	@Authorized
+//	public ResponseEntity<User> getUserById(@RequestParam("id") int id) {
+//		if(id <= 0) {
+//			return new ResponseEntity<User>(us.getId(id), HttpStatus.BAD_REQUEST);
+//		}
+//		return ResponseEntity.ok(us.getId(id));
+//	}
+	
+	@GetMapping
+	public ResponseEntity<User> getUser(@RequestHeader("Authorization") String token) {
+		int userid = JWTUtil.verifyUserToken(token);
+		return ResponseEntity.ok(us.getId(userid));
 	}
 	
-
 	@PutMapping
 	@Authorized
 	public ResponseEntity<User> updateUser(@RequestBody User u) {

@@ -97,6 +97,15 @@ INSERT INTO users (id, email, password, username, firstname, lastname) VALUES (
     'bro'
 );
 
+INSERT INTO users (id, email, password, username, firstname, lastname) VALUES (
+    2,
+    'testuser2@gmail.com',
+    'pass2',
+    'test2',
+    'nef2',
+    'bro2'
+);
+
 INSERT INTO orderhistory_item (product_id, user_id, quantity, purchase_time) VALUES (
     1,
     1,
