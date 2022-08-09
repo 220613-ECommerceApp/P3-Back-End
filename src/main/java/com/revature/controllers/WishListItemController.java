@@ -8,11 +8,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.annotations.Authorized;
+import com.revature.dtos.ProductId;
+import com.revature.dtos.ProductInfo;
 import com.revature.models.Product;
 import com.revature.models.User;
 import com.revature.models.WishListItem;
@@ -38,13 +41,14 @@ public class WishListItemController {
     }
 
     @Authorized
-    @PostMapping("/addItemToWishList")
-    public ResponseEntity<String> addItemToWishList(@RequestHeader("Authorization") String authToken, int productId) {
+    @PostMapping("/addToWishList")
+    public ResponseEntity<String> addItemToWishList(@RequestHeader("Authorization") String authToken, @RequestBody ProductId productId) {
         int id = JWTUtil.verifyUserToken(authToken);
+        wishListItemService.addToWishList(productId.getId(), id);
         return ResponseEntity.ok("Added product to order history successfully!");
     }
 
-    
+
     @Authorized
     @PutMapping("/wishlist")
     public ResponseEntity<Boolean> removeWishListItem(@RequestHeader("Authorization") String authToken, Integer wishListId) {

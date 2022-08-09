@@ -15,7 +15,7 @@ import com.revature.models.WishListItem;
 public interface WishListItemRepository extends JpaRepository<WishListItem, Integer>{
     
     @Query(value = "SELECT * FROM wishlist_item WHERE user_id = :userId", nativeQuery = true)
-    public List<WishListItem> findByUserId(@Param("userId") int id);
+    List<WishListItem> findByUserId(@Param("userId") int id);
 
     // custom query to change quantity of an item inside the wish list
     @Modifying
@@ -24,11 +24,8 @@ public interface WishListItemRepository extends JpaRepository<WishListItem, Inte
 
     @Modifying
     @Query
-    (value = "DELETE FROM wishlist_item w WHERE w.id = ? AND w.product_id = ? AND w.user_id = ?", nativeQuery = true)
-    void deleteProductFromWishList(Integer wishListId, Integer product, Integer user);
-
-    WishListItem getById(int id);
-
+    (value = "DELETE FROM wishlist_item w WHERE w.id = ?", nativeQuery = true)
+    void deleteProductFromWishList(Integer wishListId);
 
 }
 
