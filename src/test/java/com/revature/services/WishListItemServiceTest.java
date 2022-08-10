@@ -6,9 +6,13 @@ import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.revature.models.Product;
 import com.revature.models.User;
@@ -17,38 +21,32 @@ import com.revature.repositories.UserRepository;
 import com.revature.repositories.WishListItemRepository;
 
 @DataJpaTest
+@ExtendWith(MockitoExtension.class)
+@ActiveProfiles("test")
+@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 public class WishListItemServiceTest {
 
-    private WishListItemService wishListItemService;
-
     @Autowired
-    private WishListItemRepository underRepoTest;
-    @MockBean
+    private WishListItemService underTest;
+    @Autowired
+    private WishListItemRepository wR;
+    @Autowired
     private UserRepository uR;
-    @MockBean
+    @Autowired
     private UserService uS;
-    
-    private User dummyUser;
-    private Product dummyProduct;
-    private WishListItem dummyWli;
-    private List<WishListItem> dummyWishList;
 
     @BeforeEach
-    private void setup() {
+    private static void setup() {
     
-        User dummyUser = new User("billy123", "billypass", "billy@me.com");
-        Product dummyProduct = new Product(1, "Pro-Pain", 29.85, 3, "", "Propane Game of the Year");
-        WishListItem dummyWli = new WishListItem(1, 23, dummyProduct, dummyUser);
-        List<WishListItem> dummyWishList = new LinkedList<>();
+        Product dP = new Product(6, "Ball", 5.79, 23, "", "This ball is for sale!");
+        User dU  = new User(2, "billy", "billypass", "billy@me.com", null, null);
+        WishListItem wLi = new WishListItem(1, 23, dP, dU);
+        List<WishListItem> underTest = new LinkedList<>();
     }
     
     @AfterEach
-    private void tearDown() {
-        dummyUser = null;
-        dummyProduct = null;
-        dummyWli = null;
-        dummyWishList = null;
-        dummyWishList = null;
+    private static void tearDown() {
+        
     }
     
     @Test
