@@ -32,7 +32,6 @@ public class TagController {
 		this.tagService = tagService;
 	}
 
-	@Authorized
 	@GetMapping
 	public ResponseEntity<List<Tag>> getTags() {
 		return ResponseEntity.ok(tagService.findAll());
