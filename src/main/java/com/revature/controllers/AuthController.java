@@ -19,8 +19,10 @@ import java.util.Optional;
 @CrossOrigin("*")
 public class AuthController {
 
-    @Autowired
+
+	  @Autowired
     private AuthService authService;
+
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest, HttpSession session) {

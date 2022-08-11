@@ -40,7 +40,6 @@ public class CartItemService {
 		cartItemRepository.deleteProductFromCart(productid, userid);
 		CartItem ci = cartItemRepository.findByUserIdAndProductId(userid, productid);
 		return ci;
-
 	}
 
 	@Transactional

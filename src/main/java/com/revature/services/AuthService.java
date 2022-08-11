@@ -1,11 +1,10 @@
 package com.revature.services;
 
+import java.util.Optional;
 import com.revature.models.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class AuthService {
@@ -14,7 +13,7 @@ public class AuthService {
     private UserService userService;
 
     public Optional<User> findByCredentials(String email, String password) {
-        return userService.findByCredentials(email, password);
+        return userService	.findByCredentials(email, password);
     }
 
     public User register(User user) {
