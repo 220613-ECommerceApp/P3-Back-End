@@ -2,13 +2,11 @@ package com.revature.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -69,7 +67,7 @@ public class CartItemServiceTest
 	@Test
 	public void TestAddItem()
 	{
-		when(mockCartRepo.addToCart(1, 1, 2)).thenReturn(true);
+//		when(mockCartRepo.addToCart(1, 1, 2)).thenReturn(true);
 		when(mockCartRepo.findByUserIdAndProductId(1, 1)).thenReturn(dummyItem1);
 		CartItem returnedItem = cartService.addItemToCart(1, 1, 2);
 		assertEquals(returnedItem, dummyItem1);
@@ -78,7 +76,7 @@ public class CartItemServiceTest
 	@Test
 	public void TestRemoveItem()
 	{
-		when(mockCartRepo.deleteProductFromCart(1, 1)).thenReturn(true);
+//		when(mockCartRepo.deleteProductFromCart(1, 1)).thenReturn(true);
 		when(mockCartRepo.findByUserIdAndProductId(1, 1)).thenReturn(null);
 		CartItem returnedItem = cartService.removeItem(1, 1);
 		assertNull(returnedItem);
@@ -87,7 +85,7 @@ public class CartItemServiceTest
 	@Test
 	public void TestUpdateQunatity()
 	{
-		when(mockCartRepo.updateQuantityInCart(2, 1, 1)).thenReturn(true);
+//		when(mockCartRepo.updateQuantityInCart(2, 1, 1)).thenReturn(true);
 		when(mockCartRepo.findByUserIdAndProductId(1, 1)).thenReturn(dummyItem1);
 		CartItem returnedItem = cartService.updateItemQuantity(2, 1, 1);
 		assertEquals(returnedItem, dummyItem1);
@@ -98,7 +96,7 @@ public class CartItemServiceTest
 	public void TestClearCart()
 	{
 		List<CartItem> emptyList = new ArrayList<CartItem>();
-		when(mockCartRepo.clearCartForUser(1)).thenReturn(true);
+//		when(mockCartRepo.clearCartForUser(1)).thenReturn(true);
 		when(mockCartRepo.findListByUserId(1)).thenReturn(emptyList);
 		List<CartItem> returnedList = cartService.clearCart(1);
 		assertEquals(returnedList, emptyList);
