@@ -15,15 +15,10 @@ import com.revature.repositories.UserRepository;
 public class CartItemService {
 
 	@Autowired
-	private final CartItemRepository cartItemRepository;
+	private CartItemRepository cartItemRepository;
 
 	@Autowired
-	private final UserRepository userRepository;
-
-	public CartItemService(CartItemRepository cartItemRepository, UserRepository userRepository) {
-		this.cartItemRepository = cartItemRepository;
-		this.userRepository = userRepository;
-	}
+	private UserRepository userRepository;
 
 	// Might not need this
 	public CartItem createCart(int userId) {
