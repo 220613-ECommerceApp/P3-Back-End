@@ -9,6 +9,7 @@ import com.revature.models.User;
 import com.revature.services.OrderHistoryService;
 import com.revature.utils.JWTUtil;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;

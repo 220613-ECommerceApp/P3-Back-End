@@ -17,7 +17,7 @@ public class OrderHistoryService {
 
     @Autowired
     private OrderHistoryItemRepository orderHistoryItemRepository;
-
+    
     public List<List<OrderInfo>> findByUserId(int id) {
         List<OrderHistoryItem> orders = orderHistoryItemRepository.findByUserId(id);
         List<List<OrderInfo>> list = new ArrayList<>();

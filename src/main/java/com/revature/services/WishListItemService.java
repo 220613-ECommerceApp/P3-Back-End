@@ -34,8 +34,8 @@ public class WishListItemService {
     }
 
     @Transactional
-    public void removeWishList(int wishListId, int userId) {
-        wishListItemRepository.deleteProductFromWishList(wishListId, userId);
+    public void removeFromWishList(int wishListId){
+        wishListItemRepository.deleteProductFromWishList(wishListId);
     }
 
 }
