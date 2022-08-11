@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-	@Autowired
+    @Autowired
     private UserRepository userRepository;
 
     public Optional<User> findByCredentials(String email, String password) {
@@ -21,17 +21,16 @@ public class UserService {
     public User save(User user) {
         return userRepository.save(user);
     }
-    
-    
+
     public User getByUsername(String name) {
-    	return userRepository.getByUsername(name);
+        return userRepository.getByUsername(name);
     }
-    
+
     public User getId(int id) {
-    	return userRepository.findById(id);
+        return userRepository.findById(id);
     }
-    
+
     public User update(User u) {
-    	return userRepository.save(u);
+        return userRepository.save(u);
     }
 }

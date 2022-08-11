@@ -28,6 +28,7 @@ import com.revature.services.ProductService;
 @CrossOrigin(origins = { "http://localhost:4200", "http://localhost:3000",
 		"http://propanegaming.s3-website.us-east-2.amazonaws.com" }, allowCredentials = "true")
 public class ProductController {
+
 	@Autowired
 	private ProductService productService;
 
