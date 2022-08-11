@@ -9,6 +9,7 @@ import com.revature.models.User;
 import com.revature.services.OrderHistoryService;
 import com.revature.utils.JWTUtil;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,12 +26,8 @@ import java.util.List;
 @RequestMapping("/api")
 @CrossOrigin(origins = {"http://localhost:4200", "http://localhost:3000", "http://propanegaming.s3-website.us-east-2.amazonaws.com"}, allowCredentials = "true")
 public class OrderHistoryController {
-
-    private final OrderHistoryService orderHistoryService;
-
-    public OrderHistoryController(OrderHistoryService orderHistoryService) {
-        this.orderHistoryService = orderHistoryService;
-    }
+    @Autowired
+    private OrderHistoryService orderHistoryService;
 
     @Authorized
     @GetMapping("/orderHistory")

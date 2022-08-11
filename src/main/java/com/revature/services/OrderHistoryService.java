@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.revature.repositories.OrderHistoryItemRepository;
@@ -13,11 +14,8 @@ import com.revature.models.OrderHistoryItem;
 
 @Service
 public class OrderHistoryService {
-    private final OrderHistoryItemRepository orderHistoryItemRepository;
-
-    public OrderHistoryService(OrderHistoryItemRepository orderHistoryItemRepository) {
-        this.orderHistoryItemRepository = orderHistoryItemRepository;
-    }
+    @Autowired
+    private OrderHistoryItemRepository orderHistoryItemRepository;
     
     public List<List<OrderInfo>> findByUserId(int id){
         List<OrderHistoryItem> orders = orderHistoryItemRepository.findByUserId(id);

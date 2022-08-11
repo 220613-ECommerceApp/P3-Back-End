@@ -1,8 +1,6 @@
 package com.revature.services;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -12,18 +10,13 @@ import org.springframework.stereotype.Service;
 import com.revature.models.Product;
 import com.revature.models.User;
 import com.revature.models.WishListItem;
-import com.revature.repositories.UserRepository;
 import com.revature.repositories.WishListItemRepository;
 
 @Service
 public class WishListItemService {
 
-    private final WishListItemRepository wishListItemRepository;
-
-    
-    public WishListItemService(WishListItemRepository wishListItemRepository){
-        this.wishListItemRepository = wishListItemRepository;
-    }
+    @Autowired
+    private WishListItemRepository wishListItemRepository;
 
     public WishListItem createWishList(Product product, User user){
         WishListItem wLi = new WishListItem();
@@ -41,8 +34,8 @@ public class WishListItemService {
     }
     
     @Transactional
-    public void removeWishList(int wishListId, int userId){
-        wishListItemRepository.deleteProductFromWishList(wishListId, userId);
+    public void removeFromWishList(int wishListId){
+        wishListItemRepository.deleteProductFromWishList(wishListId);
     }
 
 }
