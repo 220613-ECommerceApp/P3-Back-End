@@ -2,6 +2,7 @@ package com.revature.services;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.revature.models.Tag;
@@ -9,11 +10,8 @@ import com.revature.repositories.TagRepository;
 
 @Service
 public class TagService {
-	private final TagRepository tagRepository;
-
-	public TagService(TagRepository tagRepository) {
-		this.tagRepository = tagRepository;
-	}
+	@Autowired
+	private TagRepository tagRepository;
 
 	public List<Tag> findAll() {
 		return tagRepository.findAll();
