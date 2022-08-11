@@ -2,6 +2,7 @@ package com.revature.controllers;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,11 +17,9 @@ import com.revature.services.TagService;
 @CrossOrigin(origins = { "http://localhost:4200", "http://localhost:3000",
 		"http://propanegaming.s3-website.us-east-2.amazonaws.com" }, allowCredentials = "true")
 public class TagController {
-	private final TagService tagService;
 
-	public TagController(TagService tagService) {
-		this.tagService = tagService;
-	}
+	@Autowired
+	private TagService tagService;
 
 	@GetMapping
 	public ResponseEntity<List<Tag>> getTags() {

@@ -17,20 +17,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:3000", "http://propanegaming.s3-website.us-east-2.amazonaws.com"}, allowCredentials = "true")
+@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:3000",
+        "http://propanegaming.s3-website.us-east-2.amazonaws.com" }, allowCredentials = "true")
 public class OrderHistoryController {
 
-    private final OrderHistoryService orderHistoryService;
-
-    public OrderHistoryController(OrderHistoryService orderHistoryService) {
-        this.orderHistoryService = orderHistoryService;
-    }
+    @Autowired
+    private OrderHistoryService orderHistoryService;
 
     @Authorized
     @GetMapping("/orderHistory")
@@ -41,25 +40,26 @@ public class OrderHistoryController {
 
     @Authorized
     @PostMapping("/orderHistory")
-    public ResponseEntity<String> postOrderHistory(@RequestHeader("Authorization") String authToken, @RequestBody List<ProductInfo> productInfos) {
+    public ResponseEntity<String> postOrderHistory(@RequestHeader("Authorization") String authToken,
+            @RequestBody List<ProductInfo> productInfos) {
         int id = JWTUtil.verifyUserToken(authToken);
         orderHistoryService.addToOrderHistory(convertToEntity(id, productInfos));
         return ResponseEntity.ok("Added orders to order history successfully!");
     }
 
-    private OrderHistoryItem convertToEntity(int userId, ProductInfo productInfo){
+    private OrderHistoryItem convertToEntity(int userId, ProductInfo productInfo) {
         return new OrderHistoryItem(
-            0, 
-            new Product(productInfo.getId(), null, 0, 0, null, null), 
-            new User(userId, null, null, null, null, null), 
-            productInfo.getQuantity(), 
-            null);
+                0,
+                new Product(productInfo.getId(), null, 0, 0, null, null),
+                new User(userId, null, null, null, null, null),
+                productInfo.getQuantity(),
+                null);
     }
 
-    private List<OrderHistoryItem> convertToEntity(int userId, List<ProductInfo> productInfo){
+    private List<OrderHistoryItem> convertToEntity(int userId, List<ProductInfo> productInfo) {
         List<OrderHistoryItem> orders = new ArrayList<>();
 
-        for(ProductInfo p : productInfo)
+        for (ProductInfo p : productInfo)
             orders.add(convertToEntity(userId, p));
 
         return orders;

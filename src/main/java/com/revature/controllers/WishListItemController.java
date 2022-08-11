@@ -3,6 +3,7 @@ package com.revature.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,14 +27,12 @@ import com.revature.utils.JWTUtil;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:3000", "http://propanegaming.s3-website.us-east-2.amazonaws.com" }, allowCredentials = "true")
+@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:3000",
+        "http://propanegaming.s3-website.us-east-2.amazonaws.com" }, allowCredentials = "true")
 public class WishListItemController {
 
-    private final WishListItemService wishListItemService;
-
-    public WishListItemController(WishListItemService wishListItemService) {
-        this.wishListItemService = wishListItemService;
-    }
+    @Autowired
+    private WishListItemService wishListItemService;
 
     @Authorized
     @GetMapping("/getWishList")
@@ -44,7 +43,8 @@ public class WishListItemController {
 
     @Authorized
     @PostMapping("/addToWishList")
-    public ResponseEntity<String> addItemToWishList(@RequestHeader("Authorization") String authToken, @RequestBody ProductId productId) {
+    public ResponseEntity<String> addItemToWishList(@RequestHeader("Authorization") String authToken,
+            @RequestBody ProductId productId) {
         int id = JWTUtil.verifyUserToken(authToken);
         wishListItemService.addToWishList(productId.getProductId(), id);
         return ResponseEntity.ok("Added product to order history successfully!");
@@ -52,7 +52,8 @@ public class WishListItemController {
 
     @Authorized
     @DeleteMapping("/removeFromWishList")
-    public ResponseEntity<String> removeFromWishList(@RequestHeader("Authorization") String authToken, @RequestBody WishListId wishListId) {
+    public ResponseEntity<String> removeFromWishList(@RequestHeader("Authorization") String authToken,
+            @RequestBody WishListId wishListId) {
         int id = JWTUtil.verifyUserToken(authToken);
         wishListItemService.removeWishList(wishListId.getWishListId(), id);
         return ResponseEntity.ok("Deleted item from wish list successfully!");
