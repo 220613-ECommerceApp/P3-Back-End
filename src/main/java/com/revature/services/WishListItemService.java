@@ -18,26 +18,24 @@ public class WishListItemService {
     @Autowired
     private WishListItemRepository wishListItemRepository;
 
-    public WishListItem createWishList(Product product, User user){
+    public WishListItem createWishList(Product product, User user) {
         WishListItem wLi = new WishListItem();
         wLi.setUser(user);
         return wishListItemRepository.save(wLi);
     }
 
     @Transactional
-    public void addToWishList(int productId, int userId){
+    public void addToWishList(int productId, int userId) {
         wishListItemRepository.addProductToWishlist(productId, userId);
     }
 
-    public List<WishListItem> findWishListItemsByUserId(int userId){
+    public List<WishListItem> findWishListItemsByUserId(int userId) {
         return wishListItemRepository.findByUserId(userId);
     }
-    
+
     @Transactional
     public void removeFromWishList(int wishListId){
         wishListItemRepository.deleteProductFromWishList(wishListId);
     }
 
 }
-
-

@@ -6,6 +6,7 @@ import com.revature.models.User;
 import com.revature.services.AuthService;
 import com.revature.utils.JWTUtil;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,31 +19,29 @@ import java.util.Optional;
 @CrossOrigin("*")
 public class AuthController {
 
-    private final AuthService authService;
-
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
+    @Autowired
+    private AuthService authService;
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest, HttpSession session) {
         Optional<User> optional = authService.findByCredentials(loginRequest.getEmail(), loginRequest.getPassword());
 
-        if(!optional.isPresent()) {
+        if (!optional.isPresent()) {
             return ResponseEntity.badRequest().build();
         }
 
         User u = optional.get();
-        String res = String.format("{\"id\": \"%d\", \"username\": \"%s\", \"email\": \"%s\", \"token\": \"%s\"}", u.getId(), u.getUsername(), u.getEmail(), JWTUtil.generateUserToken(u));
+        String res = String.format("{\"id\": \"%d\", \"username\": \"%s\", \"email\": \"%s\", \"token\": \"%s\"}",
+                u.getId(), u.getUsername(), u.getEmail(), JWTUtil.generateUserToken(u));
 
         return ResponseEntity.ok(res);
     }
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterRequest registerRequest) {
-        User created = new User( 
-        		registerRequest.getFirstname(),
-        		registerRequest.getLastname(),
+        User created = new User(
+                registerRequest.getFirstname(),
+                registerRequest.getLastname(),
                 registerRequest.getUsername(),
                 registerRequest.getPassword(),
                 registerRequest.getEmail());

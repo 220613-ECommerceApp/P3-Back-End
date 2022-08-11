@@ -10,6 +10,7 @@ import com.revature.repositories.TagRepository;
 
 @Service
 public class TagService {
+
 	@Autowired
 	private TagRepository tagRepository;
 
