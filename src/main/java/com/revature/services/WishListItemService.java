@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.revature.models.Product;
@@ -14,12 +15,8 @@ import com.revature.repositories.WishListItemRepository;
 @Service
 public class WishListItemService {
 
-    private final WishListItemRepository wishListItemRepository;
-
-    
-    public WishListItemService(WishListItemRepository wishListItemRepository){
-        this.wishListItemRepository = wishListItemRepository;
-    }
+    @Autowired
+    private WishListItemRepository wishListItemRepository;
 
     public WishListItem createWishList(Product product, User user){
         WishListItem wLi = new WishListItem();
