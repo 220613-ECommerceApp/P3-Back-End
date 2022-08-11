@@ -6,6 +6,7 @@ import com.revature.models.User;
 import com.revature.services.AuthService;
 import com.revature.utils.JWTUtil;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,11 +19,9 @@ import java.util.Optional;
 @CrossOrigin("*")
 public class AuthController {
 
-    private final AuthService authService;
+	@Autowired
+    private AuthService authService;
 
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest, HttpSession session) {

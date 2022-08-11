@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,11 +28,8 @@ import com.revature.services.ProductService;
 @CrossOrigin(origins = { "http://localhost:4200", "http://localhost:3000",
 		"http://propanegaming.s3-website.us-east-2.amazonaws.com" }, allowCredentials = "true")
 public class ProductController {
-	private final ProductService productService;
-
-	public ProductController(ProductService productService) {
-		this.productService = productService;
-	}
+	@Autowired
+	private ProductService productService;
 
 	@GetMapping
 	public ResponseEntity<List<Product>> getInventory() {
