@@ -28,7 +28,7 @@ public class OrderHistoryServiceTest {
     @Test
     public void testFindByUserIdReturnsOrderHistory(){
         List<OrderHistoryItem> orders = orderHistoryItemRepository.findByUserId(1);
-        assertEquals(6, orders.size());
+        assertEquals(5, orders.size());
     }
 
 }
