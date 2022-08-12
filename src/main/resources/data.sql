@@ -106,6 +106,8 @@ INSERT INTO users (id, email, password, username, firstname, lastname) VALUES (
     'bro2'
 );
 
+BEGIN;
+
 INSERT INTO orderhistory_item (product_id, user_id, quantity, purchase_time) VALUES (
     1,
     1,
@@ -140,6 +142,8 @@ INSERT INTO orderhistory_item (product_id, user_id, quantity, purchase_time) VAL
     50,
     CURRENT_TIMESTAMP
 );
+
+COMMIT;
 
 INSERT INTO tag (name) VALUES (
     'bryan'
