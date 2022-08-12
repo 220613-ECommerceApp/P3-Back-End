@@ -27,9 +27,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.dtos.OrderInfo;
 import com.revature.dtos.ProductInfo;
-import com.revature.models.OrderHistoryItem;
-import com.revature.models.Product;
-import com.revature.models.User;
 
 @SpringBootTest
 @AutoConfigureMockMvc
