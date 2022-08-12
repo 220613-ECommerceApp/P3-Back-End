@@ -107,7 +107,8 @@ class ProductControllerTest {
             String json = result.getResponse().getContentAsString();
             List<Product> products = mapper.readValue(json, new TypeReference<List<Product>>() {
             });
-            assertEquals(1, products.size());
+            System.out.println(products.toString());
+            assertEquals(2, products.size());
             assertEquals("Baseball Cap", products.get(0).getName());
       }
 
