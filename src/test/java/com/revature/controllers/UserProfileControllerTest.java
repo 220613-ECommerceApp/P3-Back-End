@@ -64,6 +64,7 @@ public class UserProfileControllerTest {
 	 @Test
      void shouldUpdateUser() throws Exception {
 		 
+		 // create a user object
 		 User user = new User(1, "john", "doe", "test", "passupdated", "testuser@gmail.com" );
 		 
 		 String jsonUserContent = mapper.writeValueAsString(user);
