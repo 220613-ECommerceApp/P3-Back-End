@@ -41,11 +41,11 @@ public class OrderHistoryController {
 
     @Authorized
     @PostMapping("/orderHistory")
-    public ResponseEntity<String> postOrderHistory(@RequestHeader("Authorization") String authToken,
+    public ResponseEntity<List<ProductInfo>> postOrderHistory(@RequestHeader("Authorization") String authToken,
             @RequestBody List<ProductInfo> productInfos) {
         int id = JWTUtil.verifyUserToken(authToken);
         orderHistoryService.addToOrderHistory(convertToEntity(id, productInfos));
-        return ResponseEntity.ok("Added orders to order history successfully!");
+        return ResponseEntity.ok(productInfos);
     }
 
     private OrderHistoryItem convertToEntity(int userId, ProductInfo productInfo) {
