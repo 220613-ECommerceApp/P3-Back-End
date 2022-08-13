@@ -318,7 +318,7 @@ class ProductControllerTest {
       void shouldFindProductSuperSearch() throws Exception {
             MvcResult result = mockMvc.perform(get("/api/product/search/superSearch")
                         .header("authorization", "Bearer " + token)
-                        .param("query", "nice Shirt Headphones"))
+                        .param("query", "LaWNmOWeR pubg moon"))
                         .andExpect(status().isOk())
                         .andReturn();
 
