@@ -56,7 +56,7 @@ class ProductControllerTest {
 
       @Test
       void shouldGetProductById() throws Exception {
-            MvcResult result = mockMvc.perform(get("/api/product/{id}", "15")
+            MvcResult result = mockMvc.perform(get("/api/product/{id}", "9")
                         .header("authorization", "Bearer " + token))
                         .andExpect(status().isOk())
                         .andReturn();
@@ -184,7 +184,7 @@ class ProductControllerTest {
       @Test
       void shouldBeAbleToPurchaseAnItem() throws Exception {
             List<ProductInfo> testList = new ArrayList<>();
-            ProductInfo productInfo = new ProductInfo(14, 2);
+            ProductInfo productInfo = new ProductInfo(8, 2);
             testList.add(productInfo);
             String purchaseJSON = mapper.writeValueAsString(testList);
 
@@ -250,7 +250,7 @@ class ProductControllerTest {
                         .andExpect(status().isOk())
                         .andReturn();
 
-            MvcResult deleteionResult = mockMvc.perform(delete("/api/product/{id}", 6)
+            MvcResult deleteionResult = mockMvc.perform(delete("/api/product/{id}", 10)
                         .header("authorization", "Bearer " + token))
                         .andExpect(status().isOk())
                         .andReturn();
@@ -302,7 +302,7 @@ class ProductControllerTest {
 
       @Test
       void searchByTagReturnsResult() throws Exception {
-            MvcResult result = mockMvc.perform(get("/api/product/search/tag/{tagName}", "bryan")
+            MvcResult result = mockMvc.perform(get("/api/product/search/tag/{tagName}", "Sports")
                         .header("authorization", "Bearer " + token))
                         .andExpect(status().isOk())
                         .andReturn();
@@ -343,8 +343,8 @@ class ProductControllerTest {
       void shouldFindProductSuperSearchTag() throws Exception {
             MvcResult result = mockMvc.perform(get("/api/product/search/superSearch")
                         .header("authorization", "Bearer " + token)
-                        .param("query", "fancy Shirt Headphones")
-                        .param("tagName", "bryan"))
+                        .param("query", "Hank King of the")
+                        .param("tagName", "Sports"))
                         .andExpect(status().isOk())
                         .andReturn();
 
@@ -352,11 +352,11 @@ class ProductControllerTest {
             List<Product> products = mapper.readValue(json, new TypeReference<List<Product>>() {
             });
 
-            Product hat = products.stream().filter(item -> item.getName().equals("Baseball Cap")).findAny()
+            Product propane = products.stream().filter(item -> item.getName().equals("King of the Hill")).findAny()
                         .orElse(null);
 
             assertEquals(1, products.size());
-            assertNotNull(hat);
+            assertNotNull(propane);
       }
 
       @Test
@@ -364,7 +364,7 @@ class ProductControllerTest {
             MvcResult result = mockMvc.perform(get("/api/product/search/superSearch")
                         .header("authorization", "Bearer " + token)
                         .param("query", " ")
-                        .param("tagName", "bryan"))
+                        .param("tagName", "Sports"))
                         .andExpect(status().isOk())
                         .andReturn();
 
@@ -372,15 +372,16 @@ class ProductControllerTest {
             List<Product> products = mapper.readValue(json, new TypeReference<List<Product>>() {
             });
 
-            Product hat = products.stream().filter(item -> item.getName().equals("Baseball Cap")).findAny()
+            Product golf = products.stream().filter(item -> item.getName().equals("Mario Golf: Toadstool Tour"))
+                        .findAny()
                         .orElse(null);
 
-            Product bag = products.stream().filter(item -> item.getName().equals("Shopping Bag")).findAny()
+            Product propane = products.stream().filter(item -> item.getName().equals("King of the Hill")).findAny()
                         .orElse(null);
 
             assertEquals(2, products.size());
-            assertNotNull(hat);
-            assertNotNull(bag);
+            assertNotNull(golf);
+            assertNotNull(propane);
       }
 
       @Test
