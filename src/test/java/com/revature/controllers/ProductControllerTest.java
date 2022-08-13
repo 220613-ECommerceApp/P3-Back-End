@@ -326,16 +326,17 @@ class ProductControllerTest {
             List<Product> products = mapper.readValue(json, new TypeReference<List<Product>>() {
             });
 
-            Product headphones = products.stream().filter(item -> item.getName().equals("Headphones")).findAny()
+            Product prey = products.stream().filter(item -> item.getName().equals("Prey")).findAny()
                         .orElse(null);
-            Product teeShirt = products.stream().filter(item -> item.getName().equals("TeeShirt")).findAny()
+            Product propane = products.stream().filter(item -> item.getName().equals("King of the Hill")).findAny()
                         .orElse(null);
-            Product coat = products.stream().filter(item -> item.getName().equals("Coat")).findAny().orElse(null);
+            Product pubg = products.stream().filter(item -> item.getName().equals("PUBG: Battlegrounds"))
+                        .findAny().orElse(null);
 
             assertEquals(3, products.size());
-            assertNotNull(headphones);
-            assertNotNull(teeShirt);
-            assertNotNull(coat);
+            assertNotNull(prey);
+            assertNotNull(propane);
+            assertNotNull(pubg);
       }
 
       @Test
