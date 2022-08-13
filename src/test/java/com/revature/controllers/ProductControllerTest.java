@@ -143,7 +143,7 @@ class ProductControllerTest {
             Product marioGolf = products.stream().filter(item -> item.getName().equals("Mario Golf: Toadstool Tour"))
                         .findAny().orElse(null);
 
-            assertEquals(3, products.size());
+            assertEquals(4, products.size());
             assertNotNull(prey);
             assertNotNull(propane);
             assertNotNull(marioGolf);
