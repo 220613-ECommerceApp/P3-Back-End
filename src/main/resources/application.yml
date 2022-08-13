@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev
+    active: production
 
 logging:
   file.name: logs/propane-gaming.log
