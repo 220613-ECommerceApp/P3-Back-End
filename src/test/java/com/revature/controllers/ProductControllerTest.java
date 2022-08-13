@@ -56,14 +56,14 @@ class ProductControllerTest {
 
       @Test
       void shouldGetProductById() throws Exception {
-            MvcResult result = mockMvc.perform(get("/api/product/{id}", "1")
+            MvcResult result = mockMvc.perform(get("/api/product/{id}", "9")
                         .header("authorization", "Bearer " + token))
                         .andExpect(status().isOk())
                         .andReturn();
 
             String json = result.getResponse().getContentAsString();
             Product product = mapper.readValue(json, Product.class);
-            assertEquals("Headphones", product.getName());
+            assertEquals("King of the Hill", product.getName());
       }
 
       @Test
@@ -79,7 +79,7 @@ class ProductControllerTest {
 
       @Test
       void shouldUpsertProduct() throws Exception {
-            Product proPain = new Product(13, "Pro-Pain", 69.99, 3, "none",
+            Product proPain = new Product(66, "Pro-Pain", 69.99, 3, "none",
                         "Well that figures, those two idiots spelled it wrong. -Hank Rutherford Hill, Assistant manager of Strickland Propane");
             String proPainJSON = mapper.writeValueAsString(proPain);
 
@@ -99,8 +99,9 @@ class ProductControllerTest {
 
       @Test
       void shouldFindProductWithDescription() throws Exception {
-            MvcResult result = mockMvc.perform(get("/api/product/search/description/{query}", "fancy person")
-                        .header("authorization", "Bearer " + token))
+            MvcResult result = mockMvc
+                        .perform(get("/api/product/search/description/{query}", "fictionalized 80s Latin America")
+                                    .header("authorization", "Bearer " + token))
                         .andExpect(status().isOk())
                         .andReturn();
 
@@ -108,8 +109,8 @@ class ProductControllerTest {
             List<Product> products = mapper.readValue(json, new TypeReference<List<Product>>() {
             });
             System.out.println(products.toString());
-            assertEquals(2, products.size());
-            assertEquals("Baseball Cap", products.get(0).getName());
+            assertEquals(1, products.size());
+            assertEquals("Cartel Tycoon", products.get(0).getName());
       }
 
       @Test
@@ -127,7 +128,7 @@ class ProductControllerTest {
       void shouldFindProductWithDescriptionAndName() throws Exception {
             MvcResult result = mockMvc.perform(get("/api/product/search/name_description")
                         .header("authorization", "Bearer " + token)
-                        .param("query", "nice Shirt Headphones"))
+                        .param("query", "LaWNmOWeR Mario moon"))
                         .andExpect(status().isOk())
                         .andReturn();
 
@@ -135,16 +136,17 @@ class ProductControllerTest {
             List<Product> products = mapper.readValue(json, new TypeReference<List<Product>>() {
             });
 
-            Product headphones = products.stream().filter(item -> item.getName().equals("Headphones")).findAny()
+            Product prey = products.stream().filter(item -> item.getName().equals("Prey")).findAny()
                         .orElse(null);
-            Product teeShirt = products.stream().filter(item -> item.getName().equals("TeeShirt")).findAny()
+            Product propane = products.stream().filter(item -> item.getName().equals("King of the Hill")).findAny()
                         .orElse(null);
-            Product coat = products.stream().filter(item -> item.getName().equals("Coat")).findAny().orElse(null);
+            Product marioGolf = products.stream().filter(item -> item.getName().equals("Mario Golf: Toadstool Tour"))
+                        .findAny().orElse(null);
 
-            assertEquals(3, products.size());
-            assertNotNull(headphones);
-            assertNotNull(teeShirt);
-            assertNotNull(coat);
+            assertEquals(4, products.size());
+            assertNotNull(prey);
+            assertNotNull(propane);
+            assertNotNull(marioGolf);
       }
 
       @Test
@@ -163,7 +165,7 @@ class ProductControllerTest {
       void shouldReturnBadRequestIfBuyingTooMuch() throws Exception {
 
             List<ProductInfo> testList = new ArrayList<>();
-            ProductInfo productInfo = new ProductInfo(1, 1000);
+            ProductInfo productInfo = new ProductInfo(6, 100000);
             testList.add(productInfo);
             String purchaseJSON = mapper.writeValueAsString(testList);
 
@@ -182,7 +184,7 @@ class ProductControllerTest {
       @Test
       void shouldBeAbleToPurchaseAnItem() throws Exception {
             List<ProductInfo> testList = new ArrayList<>();
-            ProductInfo productInfo = new ProductInfo(1, 2);
+            ProductInfo productInfo = new ProductInfo(8, 2);
             testList.add(productInfo);
             String purchaseJSON = mapper.writeValueAsString(testList);
 
@@ -199,8 +201,8 @@ class ProductControllerTest {
             });
 
             assertEquals(1, products.size());
-            assertEquals("Headphones", products.get(0).getName());
-            assertEquals(8, products.get(0).getQuantity());
+            assertEquals("Prey", products.get(0).getName());
+            assertEquals(18, products.get(0).getQuantity());
       }
 
       @Test
@@ -248,7 +250,7 @@ class ProductControllerTest {
                         .andExpect(status().isOk())
                         .andReturn();
 
-            MvcResult deleteionResult = mockMvc.perform(delete("/api/product/{id}", 6)
+            MvcResult deleteionResult = mockMvc.perform(delete("/api/product/{id}", 10)
                         .header("authorization", "Bearer " + token))
                         .andExpect(status().isOk())
                         .andReturn();
@@ -274,8 +276,8 @@ class ProductControllerTest {
       void searchByPriceRangeReturnsResult() throws Exception {
             MvcResult result = mockMvc.perform(get("/api/product/search/price")
                         .header("authorization", "Bearer " + token)
-                        .param("startPrice", "20.00")
-                        .param("endPrice", "20.00"))
+                        .param("startPrice", "9.99")
+                        .param("endPrice", "9.99"))
                         .andExpect(status().isOk())
                         .andReturn();
 
@@ -284,7 +286,7 @@ class ProductControllerTest {
             });
 
             assertEquals(1, products.size());
-            assertEquals("Headphones", products.get(0).getName());
+            assertEquals("PUBG: Battlegrounds", products.get(0).getName());
       }
 
       @Test
@@ -300,7 +302,7 @@ class ProductControllerTest {
 
       @Test
       void searchByTagReturnsResult() throws Exception {
-            MvcResult result = mockMvc.perform(get("/api/product/search/tag/{tagName}", "bryan")
+            MvcResult result = mockMvc.perform(get("/api/product/search/tag/{tagName}", "Sports")
                         .header("authorization", "Bearer " + token))
                         .andExpect(status().isOk())
                         .andReturn();
@@ -316,7 +318,7 @@ class ProductControllerTest {
       void shouldFindProductSuperSearch() throws Exception {
             MvcResult result = mockMvc.perform(get("/api/product/search/superSearch")
                         .header("authorization", "Bearer " + token)
-                        .param("query", "nice Shirt Headphones"))
+                        .param("query", "LaWNmOWeR pubg moon"))
                         .andExpect(status().isOk())
                         .andReturn();
 
@@ -324,24 +326,25 @@ class ProductControllerTest {
             List<Product> products = mapper.readValue(json, new TypeReference<List<Product>>() {
             });
 
-            Product headphones = products.stream().filter(item -> item.getName().equals("Headphones")).findAny()
+            Product prey = products.stream().filter(item -> item.getName().equals("Prey")).findAny()
                         .orElse(null);
-            Product teeShirt = products.stream().filter(item -> item.getName().equals("TeeShirt")).findAny()
+            Product propane = products.stream().filter(item -> item.getName().equals("King of the Hill")).findAny()
                         .orElse(null);
-            Product coat = products.stream().filter(item -> item.getName().equals("Coat")).findAny().orElse(null);
+            Product pubg = products.stream().filter(item -> item.getName().equals("PUBG: Battlegrounds"))
+                        .findAny().orElse(null);
 
             assertEquals(3, products.size());
-            assertNotNull(headphones);
-            assertNotNull(teeShirt);
-            assertNotNull(coat);
+            assertNotNull(prey);
+            assertNotNull(propane);
+            assertNotNull(pubg);
       }
 
       @Test
       void shouldFindProductSuperSearchTag() throws Exception {
             MvcResult result = mockMvc.perform(get("/api/product/search/superSearch")
                         .header("authorization", "Bearer " + token)
-                        .param("query", "fancy Shirt Headphones")
-                        .param("tagName", "bryan"))
+                        .param("query", "Hank King of the")
+                        .param("tagName", "Sports"))
                         .andExpect(status().isOk())
                         .andReturn();
 
@@ -349,11 +352,11 @@ class ProductControllerTest {
             List<Product> products = mapper.readValue(json, new TypeReference<List<Product>>() {
             });
 
-            Product hat = products.stream().filter(item -> item.getName().equals("Baseball Cap")).findAny()
+            Product propane = products.stream().filter(item -> item.getName().equals("King of the Hill")).findAny()
                         .orElse(null);
 
             assertEquals(1, products.size());
-            assertNotNull(hat);
+            assertNotNull(propane);
       }
 
       @Test
@@ -361,7 +364,7 @@ class ProductControllerTest {
             MvcResult result = mockMvc.perform(get("/api/product/search/superSearch")
                         .header("authorization", "Bearer " + token)
                         .param("query", " ")
-                        .param("tagName", "bryan"))
+                        .param("tagName", "Sports"))
                         .andExpect(status().isOk())
                         .andReturn();
 
@@ -369,15 +372,16 @@ class ProductControllerTest {
             List<Product> products = mapper.readValue(json, new TypeReference<List<Product>>() {
             });
 
-            Product hat = products.stream().filter(item -> item.getName().equals("Baseball Cap")).findAny()
+            Product golf = products.stream().filter(item -> item.getName().equals("Mario Golf: Toadstool Tour"))
+                        .findAny()
                         .orElse(null);
 
-            Product bag = products.stream().filter(item -> item.getName().equals("Shopping Bag")).findAny()
+            Product propane = products.stream().filter(item -> item.getName().equals("King of the Hill")).findAny()
                         .orElse(null);
 
             assertEquals(2, products.size());
-            assertNotNull(hat);
-            assertNotNull(bag);
+            assertNotNull(golf);
+            assertNotNull(propane);
       }
 
       @Test

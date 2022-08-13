@@ -43,7 +43,7 @@ public class TagControllerTest {
       List<Tag> tags = mapper.readValue(json, new TypeReference<List<Tag>>() {
       });
 
-      Tag tag = tags.stream().filter(item -> item.getName().equals("bryan")).findAny().orElse(null);
+      Tag tag = tags.stream().filter(item -> item.getName().equals("Action")).findAny().orElse(null);
       assertNotNull(tag);
    }
 
