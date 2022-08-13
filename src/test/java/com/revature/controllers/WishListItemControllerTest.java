@@ -65,14 +65,10 @@ class WishListItemControllerTest {
 
     @Test
     void testRemoveFromWishList() throws Exception{
-        WishListId wishListId = new WishListId(1);
-        String wishlistIdJSON = mapper.writeValueAsString(wishListId);
-
-        mockMvc.perform(delete("/api/removeFromWishList")
+        mockMvc.perform(delete("/api/removeFromWishList/1")
         .header("Authorization", token)
         .accept(MediaType.APPLICATION_JSON)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(wishlistIdJSON))
+        .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk());
 
         MvcResult result = mockMvc.perform(get("/api/getWishList")
