@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -38,17 +39,18 @@ public class WishListItemController {
 
     @Authorized
     @PostMapping("/addToWishList")
-    public ResponseEntity<String> addItemToWishList(@RequestHeader("Authorization") String authToken,
+    public ResponseEntity<ProductId> addItemToWishList(@RequestHeader("Authorization") String authToken,
             @RequestBody ProductId productId) {
         int id = JWTUtil.verifyUserToken(authToken);
         wishListItemService.addToWishList(productId.getProductId(), id);
-        return ResponseEntity.ok("Added product to order history successfully!");
+        return ResponseEntity.ok(productId);
     }
 
     @Authorized
-    @DeleteMapping("/removeFromWishList")
-    public ResponseEntity<String> removeFromWishList(@RequestHeader("Authorization") String authToken, @RequestBody WishListId wishListId) {
-        wishListItemService.removeFromWishList(wishListId.getWishListId());
-        return ResponseEntity.ok("Deleted item from wish list successfully!");
+    @DeleteMapping("/removeFromWishList/{wishlistId}")
+    public ResponseEntity<WishListId> removeFromWishList(@PathVariable("wishlistId") int wishlistId, 
+        @RequestHeader("Authorization") String authToken) {
+        wishListItemService.removeFromWishList(wishlistId);
+        return ResponseEntity.ok(new WishListId(wishlistId));
     }
 }
