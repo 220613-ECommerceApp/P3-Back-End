@@ -23,6 +23,9 @@ public class OrderHistoryService {
         List<List<OrderInfo>> list = new ArrayList<>();
 
         list.add(new ArrayList<OrderInfo>());
+        if(orders.size() < 1) {
+            return list;
+        }
         list.get(0).add(convertToDto(orders.get(0)));
 
         for (int i = 1; i < orders.size(); ++i) {
@@ -31,7 +34,6 @@ public class OrderHistoryService {
             }
             list.get(list.size() - 1).add(convertToDto(orders.get(i)));
         }
-
         return list;
     }
 
