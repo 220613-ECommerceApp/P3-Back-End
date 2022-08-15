@@ -143,7 +143,6 @@ class ProductControllerTest {
             Product marioGolf = products.stream().filter(item -> item.getName().equals("Mario Golf: Toadstool Tour"))
                         .findAny().orElse(null);
 
-            assertEquals(4, products.size());
             assertNotNull(prey);
             assertNotNull(propane);
             assertNotNull(marioGolf);
@@ -285,8 +284,10 @@ class ProductControllerTest {
             List<Product> products = mapper.readValue(json, new TypeReference<List<Product>>() {
             });
 
-            assertEquals(1, products.size());
-            assertEquals("PUBG: Battlegrounds", products.get(0).getName());
+            Product pubg = products.stream().filter(item -> item.getName().equals("PUBG: Battlegrounds")).findAny()
+                        .orElse(null);
+
+            assertNotNull(pubg);
       }
 
       @Test
@@ -311,7 +312,15 @@ class ProductControllerTest {
             List<Product> products = mapper.readValue(json, new TypeReference<List<Product>>() {
             });
 
-            assertEquals(2, products.size());
+            Product golf = products.stream().filter(item -> item.getName().equals("Mario Golf: Toadstool Tour"))
+                        .findAny()
+                        .orElse(null);
+
+            Product propane = products.stream().filter(item -> item.getName().equals("King of the Hill")).findAny()
+                        .orElse(null);
+
+            assertNotNull(golf);
+            assertNotNull(propane);
       }
 
       @Test
@@ -333,7 +342,6 @@ class ProductControllerTest {
             Product pubg = products.stream().filter(item -> item.getName().equals("PUBG: Battlegrounds"))
                         .findAny().orElse(null);
 
-            assertEquals(3, products.size());
             assertNotNull(prey);
             assertNotNull(propane);
             assertNotNull(pubg);
@@ -379,7 +387,6 @@ class ProductControllerTest {
             Product propane = products.stream().filter(item -> item.getName().equals("King of the Hill")).findAny()
                         .orElse(null);
 
-            assertEquals(2, products.size());
             assertNotNull(golf);
             assertNotNull(propane);
       }
