@@ -35,4 +35,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
       public List<Product> superSearchWithTag(@Param("startPrice") double startPrice,
                   @Param("endPrice") double endPrice,
                   @Param("tagName") String tagName, @Param("pattern") String pattern);
+      
+      @Query("FROM Product ORDER BY LOWER(name)")
+      public List<Product> findAll();
 }
